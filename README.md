@@ -10,3 +10,9 @@ This was my first app that I developed with a team. The game uses a bubble shoot
   - Added feature of launching a ball from a cannon. If the ball hits a letter on the screen, it goes away and is recorded.
   - Added feature of getting points based on a word that is recoreded.
   - Added feature of loseing points based on the discarded letters.
+
+- 2.0 Build 2:
+  - Made a smoother rotating shooter
+  - Now able to rotate the shooter from anywhere on the screen, not just by touching and dragging the shooter
+  - Improved physics of ball launching
+  - After four words are entered, two more rows are added
