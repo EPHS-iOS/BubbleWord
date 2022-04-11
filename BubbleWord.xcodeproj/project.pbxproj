@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BFA349E9280481B6000977D3 /* words.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA349E8280481B6000977D3 /* words.swift */; };
 		BFED186928047F18003A3379 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFED186828047F18003A3379 /* AppDelegate.swift */; };
 		BFED186B28047F18003A3379 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BFED186A28047F18003A3379 /* GameScene.sks */; };
 		BFED186D28047F18003A3379 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = BFED186C28047F18003A3379 /* Actions.sks */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BFA349E8280481B6000977D3 /* words.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = words.swift; sourceTree = "<group>"; };
 		BFED186528047F18003A3379 /* BubbleWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BubbleWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFED186828047F18003A3379 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFED186A28047F18003A3379 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				BFED186A28047F18003A3379 /* GameScene.sks */,
 				BFED186C28047F18003A3379 /* Actions.sks */,
 				BFED186E28047F18003A3379 /* GameScene.swift */,
+				BFA349E8280481B6000977D3 /* words.swift */,
 				BFED187028047F18003A3379 /* GameViewController.swift */,
 				BFED187228047F18003A3379 /* Main.storyboard */,
 				BFED187528047F1D003A3379 /* Assets.xcassets */,
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFED186F28047F18003A3379 /* GameScene.swift in Sources */,
+				BFA349E9280481B6000977D3 /* words.swift in Sources */,
 				BFED187128047F18003A3379 /* GameViewController.swift in Sources */,
 				BFED186928047F18003A3379 /* AppDelegate.swift in Sources */,
 			);
