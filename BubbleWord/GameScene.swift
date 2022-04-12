@@ -300,11 +300,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         else {
                             var cancelWord : SKSpriteNode!
                             cancelWord = object as? SKSpriteNode
-                            var mused: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                             XWords.append(cancelWord)
                             object.removeFromParent()
                             BubbleWord.nodes.remove(at: number)
-                            var quickLetter = object.name!.prefix(1)
+                            let quickLetter = object.name!.prefix(1)
                             word.text = word.text! + quickLetter
                         }
             }
