@@ -285,7 +285,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func collision(between Ball: SKNode, object: SKNode) {
         if object != Shooter && object != BS {
-            print(object.name)
+            print(object.name!.prefix(1))
             Ball.removeFromParent()
             BS.removeFromParent()
             Shooter.removeFromParent()
@@ -304,31 +304,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             XWords.append(cancelWord)
                             object.removeFromParent()
                             BubbleWord.nodes.remove(at: number)
-                            var quickLetter = ""
-                            if number > 25 {
-                                quickLetter = String(object.name!.prefix(1))
-                            }
-                            else {quickLetter = letters[number]}
-                            for numers in 0...25 {
-                                if  quickLetter == letters[numers]{
-                                    if mused[numers] == 0 {
-                                        //XWords.append(cancelWord)
-                                        mused[numers] += 1
-                                    }
-                                    else {
-                                        var usedNum = mused[number]
-                                        var usedName = letters[number]
-                                        while usedNum > 0 {
-                                            usedName += letters[number]
-                                            usedNum -= 1
-                                        }
-                                        cancelWord.name = usedName
-                                        //XWords.append(cancelWord)
-                                    }
-                                    word.text = word.text! + quickLetter
-                                    return
-                                }
-                            }
+                            var quickLetter = object.name!.prefix(1)
+                            word.text = word.text! + quickLetter
                         }
             }
         }
