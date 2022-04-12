@@ -123,6 +123,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    
+    // Touches Functions
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         bringBack()
         if let touch = touches.first {
@@ -133,12 +137,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if !touchedWhere.isEmpty {
                     for node in touchedWhere {
                         if let sprite = node as? SKSpriteNode {
-                            if sprite == Shooter {
-                                shooter(touchLocation: touchLocation)
-                            }
                             if sprite == check {
                                 ballCount += 1
-                                if ballCount % 6 == 0 && ballCount != 0{
+                                if ballCount % 4 == 0 && ballCount != 0{
                                     print("HA")
                                     addSquares()
                                 }
@@ -159,32 +160,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                                 quickboolean = true
                                             }
                                         }
+                                        
+                                        
                                         var tempArray: [String]
                                         tempArray = findList(length: count[position])
-                                        for xyz in 0...(tempArray.count - 1) {
-                                            if tempArray[xyz].localizedUppercase == word.text! {
-                                                scoreInt += scrabVal()
-                                                score.text = "Score: " + String(scoreInt)
-                                                word.text = ""
+                                        for n in 0...(tempArray.count - 1) {
+                                            if tempArray[n].localizedUppercase == word.text! {
+                                                scrabVal()
                                                 XWords.removeAll()
                                                 return
                                             }
                                         }
                                     }
                                 }
-                                
                             }
                             if sprite == cancel {
                                 if cancelMode {
                                     cancelMode = false
                                 }
                                 else if word.text != "" {
-                                    scoreInt -= scrabVal()
-                                    score.text = "Score: " + String(scoreInt)
-                                    for wifdjn in 0...(XWords.count - 1){
-                                        addChild(XWords[wifdjn])
+                                    scrabVal()
+                                    for n in 0...(XWords.count - 1){
+                                        addChild(XWords[n])
                                     }
                                     word.text = ""
+                                    XWords.removeAll()
                                 }
                                 else{cancelMode = true}
                             }
@@ -197,73 +197,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
-            let touchedWhere = nodes(at: touchLocation)
             shooter(touchLocation: touchLocation)
-            if !touchedWhere.isEmpty {
-                for node in touchedWhere {
-                    if let sprite = node as? SKSpriteNode {
-                        if sprite == Shooter {
-                            shooter(touchLocation: touchLocation)
-                        }
-                    }
-                }
-            }
         }
     }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
             let touchedWhere = nodes(at: touchLocation)
-            
-                release(touchLocation: touchLocation)
-            
-            if !touchedWhere.isEmpty {
-                for node in touchedWhere {
-                    if let sprite = node as? SKSpriteNode {
-                        if sprite == Shooter {
-                           release(touchLocation: touchLocation)
-                        }
-                    }
-                }
+            if ZRot {
+                let distance = sqrt(pow(touchLocation.x - OG!.x, 2) + pow(touchLocation.y - OG!.y, 2))
+                let x2 = 0
+                let y2 = -321 + distance
+                let x1 = touchLocation.x
+                let y1 = touchLocation.y
+                let theta = atan((y2-y1) / (CGFloat(x2)-CGFloat(x1)))
+                Shooter.removeFromParent()
+                BS.zRotation = Shooter.zRotation
+                Ball.position = CGPoint(x: theta, y: -321)
+                addChild(Ball)
+                
+                addChild(BS)
+                Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x * 1.5, dy: 350)
             }
         }
     }
+    
+    
+    // Functions for Touch
+    
+    
     func shooter(touchLocation: CGPoint){
         let x1 = touchLocation.x
         let y1 = touchLocation.y - 321
         let distance = sqrt(x1 * x1 + y1 * y1)
-        
-        
-        
-        
         var theta = acos(x1 / distance) - (.pi/2)
         theta *= 2.54
-        
         if Shooter.zRotation != theta {
             ZRot = true
         }
         Shooter.zRotation = theta
-        Shooter.removeFromParent()
-        addChild(Shooter)
-    }
-    func release(touchLocation: CGPoint) {
-        if ZRot {
-            let distance = sqrt(pow(touchLocation.x - OG!.x, 2) + pow(touchLocation.y - OG!.y, 2))
-            let x2 = 0
-            let y2 = -321 + distance
-            let x1 = touchLocation.x
-            let y1 = touchLocation.y
-            var theta = atan((y2-y1) / (CGFloat(x2)-CGFloat(x1)))
-            Shooter.removeFromParent()
-            BS.zRotation = Shooter.zRotation
-            Ball.position = CGPoint(x: theta, y: -321)
-            addChild(Ball)
-            
-            addChild(BS)
-            Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x * 1.5, dy: 350)
-        }
-        
     }
     
     func bringBack(){
@@ -283,7 +256,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func scrabVal() -> Int {
+    func scrabVal() {
         var tempWord = word.text!
         var scrabScore = 0
         while tempWord.count > 0 {
@@ -295,8 +268,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
         }
-        return scrabScore
+        scoreInt += scrabScore
+        score.text = "Score: " + String(scoreInt)
+        word.text = ""
     }
+    
+    func letterNum(object: SKNode) -> Int {
+        for n in 0...(BubbleWord.nodes.count - 1) {
+            if object == BubbleWord.nodes[n] {
+                return n
+            }
+        }
+        return -1
+    }
+    
     
     func collision(between Ball: SKNode, object: SKNode) {
         if object != Shooter && object != BS {
@@ -305,8 +290,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             Shooter.removeFromParent()
             addChild(Shooter)
             Shooter.zRotation = 0
-            for number in 0...(BubbleWord.nodes.count - 1) {
-                    if object == BubbleWord.nodes[number]{
+            let number = letterNum(object: object)
+            if number != -1 {
                         if cancelMode {
                             object.removeFromParent()
                         }
@@ -344,12 +329,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 }
                             }
                         }
-                }
             }
         }
-        
-        
-        
     }
     
     func addSquares() {
@@ -371,7 +352,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for z in 0...11 {
             let randomInt = Int.random(in: 0...100)
             let random = weighted[randomInt]
-            var testL = SKSpriteNode(imageNamed:letters[random])
+            let testL = SKSpriteNode(imageNamed:letters[random])
             testL.size = CGSize(width: size, height: size)
             testL.position = CGPoint(x: localWidth, y: localHeight)
             testL.physicsBody = SKPhysicsBody(rectangleOf: testL.size)
@@ -410,17 +391,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func squares(Q: Int) {
+ 
+    func initialize(){
+        check.position = CGPoint(x: 137.5, y: -337.847)
+        check.zPosition = 1
+        addChild(check)
+        cancel.position = CGPoint(x: -137.5, y: -337.847)
+        cancel.zPosition = 1
+        addChild(cancel)
+        
+        Shooter.size = CGSize(width: 78, height: 108)
+        Shooter.position = CGPoint(x: 0, y: -321)
+        addChild(Shooter)
+        BS.size = CGSize(width: 78, height: 108)
+        BS.position = CGPoint(x: 0, y: -321)
+        BS.zPosition = 1
+        Ball.size = CGSize(width: 35, height: 35)
+        Ball.physicsBody = SKPhysicsBody(circleOfRadius: 17.5)
+        Ball.physicsBody?.contactTestBitMask = Ball.physicsBody?.collisionBitMask ?? 0
+        Ball.physicsBody?.affectedByGravity = false
+        Ball.zPosition = 0
+        Ball.physicsBody?.mass = 0.0997
+        Ball.name = "Ball"
         let size = width/8
         let gap = 2 * size / 5
         var localWidth = width / 2 - size / 2
         //look into if can detect notch
         var localHeight = height / 2 - size / 2 - 50
+        word = SKLabelNode(text: "")
+        word.fontName = "Microsoft Sans Serif"
+        word.fontSize = 18.0
+        word.position = CGPoint(x: localWidth - 10, y: localHeight + 30)
+        addChild(word)
+        score = SKLabelNode(text: "Score: 0")
+        score.fontName = "Microsoft Sans Serif"
+        score.fontSize = 18.0
+        score.position = CGPoint(x: -1 * (localWidth - 10), y: localHeight + 30)
+        addChild(score)
+       
         var n = 0
         
-
-        
-        while n < Q {
+        while n < 30 {
             
             let randomInt = Int.random(in: 0...100)
             let random = weighted[randomInt]
@@ -459,7 +470,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 BubbleWord.nodes[numberOf].name = usedName
                 addChild(BubbleWord.nodes[numberOf])
                 BubbleWord.nodes[numberOf].name = usedName
-                
             }
             
             
@@ -472,49 +482,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 localHeight -= (gap + size)
             }
         }
-    }
-    
-    
-    func initialize(){
-        check.position = CGPoint(x: 137.5, y: -337.847)
-        check.zPosition = 1
-        addChild(check)
-        cancel.position = CGPoint(x: -137.5, y: -337.847)
-        cancel.zPosition = 1
-        addChild(cancel)
-        
-        Shooter.size = CGSize(width: 78, height: 108)
-        Shooter.position = CGPoint(x: 0, y: -321)
-        addChild(Shooter)
-        BS.size = CGSize(width: 78, height: 108)
-        BS.position = CGPoint(x: 0, y: -321)
-        BS.zPosition = 1
-        Ball.size = CGSize(width: 35, height: 35)
-        Ball.physicsBody = SKPhysicsBody(circleOfRadius: 17.5)
-        Ball.physicsBody?.contactTestBitMask = Ball.physicsBody?.collisionBitMask ?? 0
-        Ball.physicsBody?.affectedByGravity = false
-        Ball.zPosition = 0
-        Ball.physicsBody?.mass = 0.0997
-        Ball.name = "Ball"
-        let size = width/8
-        let gap = 2 * size / 5
-        var localWidth = width / 2 - size / 2
-        //look into if can detect notch
-        var localHeight = height / 2 - size / 2 - 50
-        word = SKLabelNode(text: "")
-        word.fontName = "Microsoft Sans Serif"
-        word.fontSize = 18.0
-        word.position = CGPoint(x: localWidth - 10, y: localHeight + 30)
-        addChild(word)
-        score = SKLabelNode(text: "Score: 0")
-        score.fontName = "Microsoft Sans Serif"
-        score.fontSize = 18.0
-        score.position = CGPoint(x: -1 * (localWidth - 10), y: localHeight + 30)
-        addChild(score)
-        
-        squares(Q: 30)
 
          
     }
 }
 
+//530
