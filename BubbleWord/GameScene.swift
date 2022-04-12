@@ -54,7 +54,7 @@ var Y = SKSpriteNode(imageNamed: letters[24])
 var Z = SKSpriteNode(imageNamed: letters[25])
 
 var check = SKSpriteNode(imageNamed: "check")
-var cancel = SKSpriteNode(imageNamed: "X")
+var cancel = SKSpriteNode(imageNamed: "Xulu")
 
 var Shooter = SKSpriteNode(imageNamed: "Shooter")
 var BS = SKSpriteNode(imageNamed: "BS")
