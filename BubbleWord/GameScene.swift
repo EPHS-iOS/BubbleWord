@@ -66,7 +66,6 @@ var ballCount = 0
 
 var nodes: [SKSpriteNode] = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
 var XWords: [SKSpriteNode] = []
-var YWords: [SKSpriteNode] = []
 
 let aCount = wordsA.count
 let bCount = wordsB.count
@@ -166,7 +165,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                         tempArray = findList(length: count[position])
                                         for n in 0...(tempArray.count - 1) {
                                             if tempArray[n].localizedUppercase == word.text! {
-                                                scrabVal()
+                                                scoreInt += scrabVal()
+                                                score.text = "Score: " + String(scoreInt)
                                                 XWords.removeAll()
                                                 return
                                             }
@@ -179,8 +179,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                     cancelMode = false
                                 }
                                 else if word.text != "" {
-                                    scrabVal()
+                                    scoreInt -= scrabVal()
+                                    score.text = "Score: " + String(scoreInt)
                                     for n in 0...(XWords.count - 1){
+                                        BubbleWord.nodes.append(XWords[n])
                                         addChild(XWords[n])
                                     }
                                     word.text = ""
@@ -204,7 +206,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
-            let touchedWhere = nodes(at: touchLocation)
             if ZRot {
                 let distance = sqrt(pow(touchLocation.x - OG!.x, 2) + pow(touchLocation.y - OG!.y, 2))
                 let x2 = 0
@@ -256,7 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func scrabVal() {
+    func scrabVal() -> Int {
         var tempWord = word.text!
         var scrabScore = 0
         while tempWord.count > 0 {
@@ -268,9 +269,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
         }
-        scoreInt += scrabScore
-        score.text = "Score: " + String(scoreInt)
         word.text = ""
+        return scrabScore
     }
     
     func letterNum(object: SKNode) -> Int {
@@ -285,6 +285,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func collision(between Ball: SKNode, object: SKNode) {
         if object != Shooter && object != BS {
+            print(object.name)
             Ball.removeFromParent()
             BS.removeFromParent()
             Shooter.removeFromParent()
@@ -294,6 +295,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if number != -1 {
                         if cancelMode {
                             object.removeFromParent()
+                            BubbleWord.nodes.remove(at: number)
                         }
                         else {
                             var cancelWord : SKSpriteNode!
@@ -301,7 +303,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             var mused: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                             XWords.append(cancelWord)
                             object.removeFromParent()
-                            YWords.append(cancelWord)
                             BubbleWord.nodes.remove(at: number)
                             var quickLetter = ""
                             if number > 25 {
@@ -438,9 +439,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if used[random] == 0 {
                 BubbleWord.nodes[random] = SKSpriteNode(imageNamed: letters[random])
+                BubbleWord.nodes[random].name = letters[random]
                 BubbleWord.nodes[random].size = CGSize(width: size, height: size)
                 BubbleWord.nodes[random].position = CGPoint(x: localWidth, y: localHeight)
-                
                 BubbleWord.nodes[random].physicsBody = SKPhysicsBody(rectangleOf: BubbleWord.nodes[random].size)
                 BubbleWord.nodes[random].physicsBody?.contactTestBitMask = BubbleWord.nodes[random].physicsBody?.collisionBitMask ?? 0
                 BubbleWord.nodes[random].physicsBody?.affectedByGravity = false
