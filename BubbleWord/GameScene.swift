@@ -215,13 +215,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let y1 = touchLocation.y
                 let theta = atan((y2-y1) / (CGFloat(x2)-CGFloat(x1)))
                 Shooter.removeFromParent()
+                Ball.removeFromParent()
+                BS.removeFromParent()
                 BS.zRotation = Shooter.zRotation
                 Ball.position = CGPoint(x: theta, y: -321)
                 addChild(Ball)
-                
                 addChild(BS)
-                dx = touchLocation.x * 1.5
-                Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x * 1.5, dy: 350)
+                dx = touchLocation.x
+                Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x, dy: 350)
             }
         }
     }
