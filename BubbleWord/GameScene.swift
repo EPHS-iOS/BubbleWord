@@ -138,9 +138,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     for node in touchedWhere {
                         if let sprite = node as? SKSpriteNode {
                             if sprite == check {
-                                ballCount += 1
                                 if ballCount % 4 == 0 && ballCount != 0{
-                                    print("HA")
                                     addSquares()
                                 }
                                 if word.text == "ERIK" {
@@ -166,6 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                         tempArray = findList(length: count[position])
                                         for n in 0...(tempArray.count - 1) {
                                             if tempArray[n].localizedUppercase == word.text! {
+                                                ballCount += 1
                                                 scoreInt += scrabVal()
                                                 score.text = "Score: " + String(scoreInt)
                                                 XWords.removeAll()
@@ -208,21 +207,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
             if ZRot {
-                let distance = sqrt(pow(touchLocation.x - OG!.x, 2) + pow(touchLocation.y - OG!.y, 2))
-                let x2 = 0
-                let y2 = -321 + distance
+//                let distance = sqrt(pow(touchLocation.x - OG!.x, 2) + pow(touchLocation.y - OG!.y, 2))
+//                let x2 = 0
+//                let y2 = -321 + distance
+//                let x1 = touchLocation.x
+//                let y1 = touchLocation.y
+//                let theta = atan((y2-y1) / (CGFloat(x2)-CGFloat(x1)))
                 let x1 = touchLocation.x
-                let y1 = touchLocation.y
-                let theta = atan((y2-y1) / (CGFloat(x2)-CGFloat(x1)))
+                let y1 = touchLocation.y + 321
+                let theta = -1 * atan(x1/y1)
                 Shooter.removeFromParent()
                 Ball.removeFromParent()
                 BS.removeFromParent()
                 BS.zRotation = Shooter.zRotation
                 Ball.position = CGPoint(x: theta, y: -321)
+                Ball.zRotation = theta
                 addChild(Ball)
                 addChild(BS)
-                dx = touchLocation.x
-                Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x, dy: 350)
+                dx = theta * 360 * -1
+                //Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x, dy: 350)
+                Ball.physicsBody?.velocity = CGVector(dx: theta * 360 * -1, dy: 350)
             }
         }
     }
@@ -233,10 +237,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func shooter(touchLocation: CGPoint){
         let x1 = touchLocation.x
-        let y1 = touchLocation.y - 321
-        let distance = sqrt(x1 * x1 + y1 * y1)
-        var theta = acos(x1 / distance) - (.pi/2)
-        theta *= 2.54
+        let y1 = touchLocation.y + 321
+        let theta = -1 * atan(x1 / y1)
         if Shooter.zRotation != theta {
             ZRot = true
         }
@@ -290,6 +292,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let number = letterNum(object: object)
                 if number != -1 {
                             if cancelMode {
+                                scoreInt -= scrabVal()
+                                score.text = "Score: " + String(scoreInt)
                                 object.removeFromParent()
                                 BubbleWord.nodes.remove(at: number)
                             }
@@ -306,6 +310,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         else {
             Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: 350)
+            scoreInt += 1
+            score.text = "Score: " + String(scoreInt)
+
         }
     }
     
