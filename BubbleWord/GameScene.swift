@@ -69,9 +69,6 @@ var dx : CGFloat?
 var nodes: [SKSpriteNode] = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
 var XWords: [SKSpriteNode] = []
 
-var lineL = SKSpriteNode(imageNamed: "lineL")
-var lineR = SKSpriteNode(imageNamed: "lineR")
-
 let aCount = wordsA.count
 let bCount = wordsB.count
 let cCount = wordsC.count
@@ -372,26 +369,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
  
     func initialize(){
-        lineL.size = CGSize(width: 3, height: height)
-        lineL.name = "lineL"
-        lineL.physicsBody = SKPhysicsBody(rectangleOf: lineL.size)
-        lineL.physicsBody?.contactTestBitMask = lineL.physicsBody?.collisionBitMask ?? 0
-        lineL.position = CGPoint(x: -1 * (width / 2), y: -200)
-        lineR.size = CGSize(width: 3, height: height)
-        lineR.physicsBody = SKPhysicsBody(rectangleOf: lineR.size)
-        lineR.physicsBody?.contactTestBitMask = lineR.physicsBody?.collisionBitMask ?? 0
-        lineR.position = CGPoint(x: width / 2, y: 0)
-        lineL.zPosition = 0
-        lineR.zPosition = 0
-        addChild(lineL)
-        addChild(lineR)
         check.position = CGPoint(x: 137.5, y: -337.847)
         check.zPosition = 1
         addChild(check)
         cancel.position = CGPoint(x: -137.5, y: -337.847)
         cancel.zPosition = 1
         addChild(cancel)
-        
         Shooter.size = CGSize(width: 78, height: 108)
         Shooter.position = CGPoint(x: 0, y: -321)
         addChild(Shooter)
