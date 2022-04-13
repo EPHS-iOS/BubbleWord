@@ -64,8 +64,13 @@ var OG : CGPoint?
 var ZRot = false
 var ballCount = 0
 
+var dx : CGFloat?
+
 var nodes: [SKSpriteNode] = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
 var XWords: [SKSpriteNode] = []
+
+var lineL = SKSpriteNode(imageNamed: "lineL")
+var lineR = SKSpriteNode(imageNamed: "lineR")
 
 let aCount = wordsA.count
 let bCount = wordsB.count
@@ -92,7 +97,6 @@ let vwxyzCount = vwxyzWords.count
 let count: [Int] = [aCount, bCount, cCount, dCount, eCount, fCount, gCount, hCount, iCount, jCount, kCount, lCount, mCount, nCount, oCount, pCount, qCount, rCount, sCount, tCount, uCount, vwxyzCount, vwxyzCount, vwxyzCount, vwxyzCount, vwxyzCount]
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
@@ -104,6 +108,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         physicsWorld.contactDelegate = self
+        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
         initialize()
         
@@ -127,7 +132,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        bringBack()
         if let touch = touches.first {
         let touchLocation = touch.location(in: self)
         let touchedWhere = nodes(at: touchLocation)
@@ -219,6 +223,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(Ball)
                 
                 addChild(BS)
+                dx = touchLocation.x * 1.5
                 Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x * 1.5, dy: 350)
             }
         }
@@ -239,14 +244,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         Shooter.zRotation = theta
     }
-    
-    func bringBack(){
-        Shooter.removeFromParent()
-        BS.removeFromParent()
-        Ball.removeFromParent()
-        addChild(Shooter)
-    }
-    
+   
     func didBegin(_ contact: SKPhysicsContact) {
         
         if contact.bodyA.node?.name == "Ball" {
@@ -284,31 +282,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func collision(between Ball: SKNode, object: SKNode) {
-        if object != Shooter && object != BS {
-            print(object.name!.prefix(1))
-            Ball.removeFromParent()
-            BS.removeFromParent()
-            Shooter.removeFromParent()
-            addChild(Shooter)
-            Shooter.zRotation = 0
-            let number = letterNum(object: object)
-            if number != -1 {
-                        if cancelMode {
-                            object.removeFromParent()
-                            BubbleWord.nodes.remove(at: number)
-                        }
-                        else {
-                            var cancelWord : SKSpriteNode!
-                            cancelWord = object as? SKSpriteNode
-                            XWords.append(cancelWord)
-                            object.removeFromParent()
-                            BubbleWord.nodes.remove(at: number)
-                            let quickLetter = object.name!.prefix(1)
-                            word.text = word.text! + quickLetter
-                        }
+            if letterNum(object: object) != -1 {
+                print(object.name!.prefix(1))
+                Ball.removeFromParent()
+                BS.removeFromParent()
+                Shooter.removeFromParent()
+                addChild(Shooter)
+                Shooter.zRotation = 0
+                let number = letterNum(object: object)
+                if number != -1 {
+                            if cancelMode {
+                                object.removeFromParent()
+                                BubbleWord.nodes.remove(at: number)
+                            }
+                            else {
+                                var cancelWord : SKSpriteNode!
+                                cancelWord = object as? SKSpriteNode
+                                XWords.append(cancelWord)
+                                object.removeFromParent()
+                                BubbleWord.nodes.remove(at: number)
+                                let quickLetter = object.name!.prefix(1)
+                                word.text = word.text! + quickLetter
+                            }
+                }
             }
+        else {
+            Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: 350)
         }
     }
+    
     
     func addSquares() {
         let size = width/8
@@ -370,6 +372,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
  
     func initialize(){
+        lineL.size = CGSize(width: 3, height: height)
+        lineL.name = "lineL"
+        lineL.physicsBody = SKPhysicsBody(rectangleOf: lineL.size)
+        lineL.physicsBody?.contactTestBitMask = lineL.physicsBody?.collisionBitMask ?? 0
+        lineL.position = CGPoint(x: -1 * (width / 2), y: -200)
+        lineR.size = CGSize(width: 3, height: height)
+        lineR.physicsBody = SKPhysicsBody(rectangleOf: lineR.size)
+        lineR.physicsBody?.contactTestBitMask = lineR.physicsBody?.collisionBitMask ?? 0
+        lineR.position = CGPoint(x: width / 2, y: 0)
+        lineL.zPosition = 0
+        lineR.zPosition = 0
+        addChild(lineL)
+        addChild(lineR)
         check.position = CGPoint(x: 137.5, y: -337.847)
         check.zPosition = 1
         addChild(check)

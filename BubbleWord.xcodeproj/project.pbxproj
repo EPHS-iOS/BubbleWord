@@ -65,11 +65,11 @@
 				BFED186A28047F18003A3379 /* GameScene.sks */,
 				BFED186C28047F18003A3379 /* Actions.sks */,
 				BFED186E28047F18003A3379 /* GameScene.swift */,
-				BFA349E8280481B6000977D3 /* words.swift */,
 				BFED187028047F18003A3379 /* GameViewController.swift */,
 				BFED187228047F18003A3379 /* Main.storyboard */,
 				BFED187528047F1D003A3379 /* Assets.xcassets */,
 				BFED187728047F1D003A3379 /* LaunchScreen.storyboard */,
+				BFA349E8280481B6000977D3 /* words.swift */,
 			);
 			path = BubbleWord;
 			sourceTree = "<group>";
