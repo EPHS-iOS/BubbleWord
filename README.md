@@ -16,3 +16,9 @@ This was my first app that I developed with a team. The game uses a bubble shoot
   - Now able to rotate the shooter from anywhere on the screen, not just by touching and dragging the shooter
   - Improved physics of ball launching
   - After four words are entered, two more rows are added
+
+-3.0
+  - Improved rotations for shooter (again)
+  - Improved direction of ball shooting (again)
+  - Fixed various bugs
+  - The ball now bounces of the walls
