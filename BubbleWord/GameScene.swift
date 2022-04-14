@@ -138,9 +138,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     for node in touchedWhere {
                         if let sprite = node as? SKSpriteNode {
                             if sprite == check {
-                                if ballCount % 4 == 0 && ballCount != 0{
-                                    addSquares()
-                                }
                                 if word.text == "ERIK" {
                                     scoreInt += 100
                                     score.text = "Score: " + String(scoreInt)
@@ -164,10 +161,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                         tempArray = findList(length: count[position])
                                         for n in 0...(tempArray.count - 1) {
                                             if tempArray[n].localizedUppercase == word.text! {
-                                                ballCount += 1
                                                 scoreInt += scrabVal()
                                                 score.text = "Score: " + String(scoreInt)
                                                 XWords.removeAll()
+                                                ballCount += 1
+                                                if ballCount % 4 == 0 && ballCount != 0{
+                                                    addSquares()
+                                                }
                                                 return
                                             }
                                         }
@@ -264,7 +264,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     scrabScore += scrabble[scrabblevalues]
                     tempWord = String(tempWord.suffix(tempWord.count - 1))
                 }
-                
             }
         }
         word.text = ""
@@ -282,8 +281,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func collision(between Ball: SKNode, object: SKNode) {
+        //print(object.name)
             if letterNum(object: object) != -1 {
-                print(object.name!.prefix(1))
                 Ball.removeFromParent()
                 BS.removeFromParent()
                 Shooter.removeFromParent()
@@ -292,7 +291,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let number = letterNum(object: object)
                 if number != -1 {
                             if cancelMode {
-                                scoreInt -= scrabVal()
+                                let letterVal = scrabVal()
+                                scoreInt = scoreInt - letterVal
                                 score.text = "Score: " + String(scoreInt)
                                 object.removeFromParent()
                                 BubbleWord.nodes.remove(at: number)
@@ -464,9 +464,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 localWidth = width / 2 - size / 2
                 localHeight -= (gap + size)
             }
-        }
-
-         
+        }  
     }
 }
 
