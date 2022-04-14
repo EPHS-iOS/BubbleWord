@@ -17,7 +17,7 @@ This was my first app that I developed with a team. The game uses a bubble shoot
   - Improved physics of ball launching
   - After four words are entered, two more rows are added
 
--3.0
+- 3.0
   - Improved rotations for shooter (again)
   - Improved direction of ball shooting (again)
   - Fixed various bugs
