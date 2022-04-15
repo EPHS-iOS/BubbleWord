@@ -7,6 +7,9 @@
 import SpriteKit
 import GameplayKit
 
+let myData = readFile(inputFile: "words.txt")
+
+let allNewWords: [[String]] = organize(data: myData)
 
 let allWords: [[String]] = [wordsA, wordsB, wordsC, wordsD, wordsE, wordsF, wordsG, wordsH, wordsI, wordsJ, wordsK, wordsL, wordsM, wordsN, wordsO, wordsP, wordsQ, wordsR, wordsS, wordsT, wordsU, vwxyzWords]
 
@@ -97,12 +100,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
+    let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
+    
     var width = UIScreen.main.bounds.width
     var height = UIScreen.main.bounds.height
     
 
     override func didMove(to view: SKView) {
-        
         
         physicsWorld.contactDelegate = self
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
