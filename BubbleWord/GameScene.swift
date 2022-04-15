@@ -7,9 +7,14 @@
 import SpriteKit
 import GameplayKit
 
-let myData = readFile(inputFile: "words.txt")
+var width = UIScreen.main.bounds.width
+var height = UIScreen.main.bounds.height
+let Size = width/8
+let gap = 2 * Size / 5
+var localWidth = width / 2 - Size / 2
+//look into if can detect notch
+var localHeight = height / 2 - Size / 2 - 50
 
-let allNewWords: [[String]] = organize(data: myData)
 
 let allWords: [[String]] = [wordsA, wordsB, wordsC, wordsD, wordsE, wordsF, wordsG, wordsH, wordsI, wordsJ, wordsK, wordsL, wordsM, wordsN, wordsO, wordsP, wordsQ, wordsR, wordsS, wordsT, wordsU, vwxyzWords]
 
@@ -21,40 +26,13 @@ var scoreInt = 0
 var val = 0
 
 let letters: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-  
-var used: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-// weigthed letter adjustment
+
 let weighted: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 10, 11, 11, 11, 11, 12, 12, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 16, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 21, 22, 22, 23, 24, 24, 25]
 
 let scrabble: [Int] = [1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10]
 
-
-var A = SKSpriteNode(imageNamed: letters[0])
-var B = SKSpriteNode(imageNamed: letters[1])
-var C = SKSpriteNode(imageNamed: letters[2])
-var D = SKSpriteNode(imageNamed: letters[3])
-var E = SKSpriteNode(imageNamed: letters[4])
-var F = SKSpriteNode(imageNamed: letters[5])
-var G = SKSpriteNode(imageNamed: letters[6])
-var H = SKSpriteNode(imageNamed: letters[7])
-var I = SKSpriteNode(imageNamed: letters[8])
-var J = SKSpriteNode(imageNamed: letters[9])
-var K = SKSpriteNode(imageNamed: letters[10])
-var L = SKSpriteNode(imageNamed: letters[11])
-var M = SKSpriteNode(imageNamed: letters[12])
-var N = SKSpriteNode(imageNamed: letters[13])
-var O = SKSpriteNode(imageNamed: letters[14])
-var P = SKSpriteNode(imageNamed: letters[15])
-var Q = SKSpriteNode(imageNamed: letters[16])
-var R = SKSpriteNode(imageNamed: letters[17])
-var S = SKSpriteNode(imageNamed: letters[18])
-var T = SKSpriteNode(imageNamed: letters[19])
-var U = SKSpriteNode(imageNamed: letters[20])
-var V = SKSpriteNode(imageNamed: letters[21])
-var W = SKSpriteNode(imageNamed: letters[22])
-var X = SKSpriteNode(imageNamed: letters[23])
-var Y = SKSpriteNode(imageNamed: letters[24])
-var Z = SKSpriteNode(imageNamed: letters[25])
+var nodes: [Letters] = []
+var XWords: [Letters] = []
 
 var check = SKSpriteNode(imageNamed: "check")
 var cancel = SKSpriteNode(imageNamed: "Xulu")
@@ -68,9 +46,6 @@ var ZRot = false
 var ballCount = 0
 
 var dx : CGFloat?
-
-var nodes: [SKSpriteNode] = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
-var XWords: [SKSpriteNode] = []
 
 let aCount = wordsA.count
 let bCount = wordsB.count
@@ -102,11 +77,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
     
-    var width = UIScreen.main.bounds.width
-    var height = UIScreen.main.bounds.height
-    
-
     override func didMove(to view: SKView) {
+        
         
         physicsWorld.contactDelegate = self
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
@@ -187,7 +159,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                     score.text = "Score: " + String(scoreInt)
                                     for n in 0...(XWords.count - 1){
                                         BubbleWord.nodes.append(XWords[n])
-                                        addChild(XWords[n])
+                                        addChild(XWords[n].spriteNode)
                                     }
                                     word.text = ""
                                     XWords.removeAll()
@@ -211,12 +183,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
             if ZRot {
-//                let distance = sqrt(pow(touchLocation.x - OG!.x, 2) + pow(touchLocation.y - OG!.y, 2))
-//                let x2 = 0
-//                let y2 = -321 + distance
-//                let x1 = touchLocation.x
-//                let y1 = touchLocation.y
-//                let theta = atan((y2-y1) / (CGFloat(x2)-CGFloat(x1)))
                 let x1 = touchLocation.x
                 let y1 = touchLocation.y + 321
                 let theta = -1 * atan(x1/y1)
@@ -229,7 +195,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(Ball)
                 addChild(BS)
                 dx = theta * 360 * -1
-                //Ball.physicsBody?.velocity = CGVector(dx: touchLocation.x, dy: 350)
                 Ball.physicsBody?.velocity = CGVector(dx: theta * 360 * -1, dy: 350)
             }
         }
@@ -250,7 +215,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
    
     func didBegin(_ contact: SKPhysicsContact) {
-        
         if contact.bodyA.node?.name == "Ball" {
             collision(between: contact.bodyA.node!, object: contact.bodyB.node!)
         }
@@ -275,111 +239,77 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func letterNum(object: SKNode) -> Int {
-        for n in 0...(BubbleWord.nodes.count - 1) {
-            if object == BubbleWord.nodes[n] {
-                return n
+        if BubbleWord.nodes.count != 0 {
+            for n in 0...(BubbleWord.nodes.count - 1) {
+                if object == BubbleWord.nodes[n].spriteNode {
+                    return n
+                }
             }
         }
         return -1
     }
     
-    
     func collision(between Ball: SKNode, object: SKNode) {
-        //print(object.name)
-            if letterNum(object: object) != -1 {
+        let n = letterNum(object: object)
+            if n != -1 {
                 Ball.removeFromParent()
                 BS.removeFromParent()
                 Shooter.removeFromParent()
                 addChild(Shooter)
                 Shooter.zRotation = 0
-                let number = letterNum(object: object)
-                if number != -1 {
-                            if cancelMode {
-                                let letterVal = scrabVal()
-                                scoreInt = scoreInt - letterVal
-                                score.text = "Score: " + String(scoreInt)
-                                object.removeFromParent()
-                                BubbleWord.nodes.remove(at: number)
+                if cancelMode {
+                    scoreInt -= BubbleWord.nodes[n].scrabble
+                    score.text = "Score: " + String(scoreInt)
+                    object.removeFromParent()
+                    BubbleWord.nodes.remove(at: n)
                             }
                             else {
-                                var cancelWord : SKSpriteNode!
-                                cancelWord = object as? SKSpriteNode
-                                XWords.append(cancelWord)
+                                XWords.append(BubbleWord.nodes[n])
                                 object.removeFromParent()
-                                BubbleWord.nodes.remove(at: number)
-                                let quickLetter = object.name!.prefix(1)
-                                word.text = word.text! + quickLetter
+                                word.text = word.text! + BubbleWord.nodes[n].letter
+                                BubbleWord.nodes.remove(at: n)
                             }
-                }
             }
         else {
-            Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: 350)
-            scoreInt += 1
-            score.text = "Score: " + String(scoreInt)
-
+            if Ball.position.y >= height / 2 - 22 || Ball.position.y <= ((height / 2) * -1) - 22{
+                Ball.physicsBody?.velocity = CGVector(dx: dx!, dy: -350)
+                scoreInt += 1
+                score.text = "Score: " + String(scoreInt)
+            }
+            else {
+                Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: 350)
+                scoreInt += 1
+                score.text = "Score: " + String(scoreInt)
+            }
         }
     }
     
-    
     func addSquares() {
-        let size = width/8
-        let gap = 2 * size / 5
-        var localWidth = width / 2 - size / 2
-        //look into if can detect notch
-        var localHeight = height / 2 - size / 2 - 50
         var n = BubbleWord.nodes.count - 1
         while n >= 0 {
-            if BubbleWord.nodes[n].position.y > -198 {
-                BubbleWord.nodes[n].position.y -= ((gap + size) * 2)
+            if BubbleWord.nodes[n].spriteNode.position.y > -198 {
+                BubbleWord.nodes[n].spriteNode.position.y -= CGFloat(((gap + Size) * 2))
                 n -= 1
             }
             else {
                 //end game
             }
         }
-        for z in 0...11 {
+        for _ in 0...11 {
             let randomInt = Int.random(in: 0...100)
             let random = weighted[randomInt]
-            let testL = SKSpriteNode(imageNamed:letters[random])
-            testL.size = CGSize(width: size, height: size)
-            testL.position = CGPoint(x: localWidth, y: localHeight)
-            testL.physicsBody = SKPhysicsBody(rectangleOf: testL.size)
-            testL.physicsBody?.contactTestBitMask = testL.physicsBody?.collisionBitMask ?? 0
-            testL.physicsBody?.affectedByGravity = false
-            testL.zPosition = 0
-            testL.physicsBody?.isDynamic = false
-            
-            if used[random] == 0 {
-                let numberOf = BubbleWord.nodes.count
-                BubbleWord.nodes.append(testL)
-                BubbleWord.nodes[numberOf].name = letters[random]
-                addChild(BubbleWord.nodes[numberOf])
-                BubbleWord.nodes[numberOf].name = letters[random]
+            let tempLetterObject = Letters(letterVal: letters[random], scrab: scrabble[random])
+            localWidth = localWidth - gap - Size
+            if n % 6 == 0 {
+                localWidth = width / 2 - Size / 2
+                localHeight -= (gap + Size)
             }
-            else {
-                var usedNum = used[random]
-                var usedName = letters[random]
-                while usedNum > 0 {
-                    usedName += letters[random]
-                    usedNum -= 1
-                    let numberOf = BubbleWord.nodes.count
-                    BubbleWord.nodes.append(testL)
-                    BubbleWord.nodes[numberOf].name = usedName
-                    addChild(BubbleWord.nodes[numberOf])
-                    BubbleWord.nodes[numberOf].name = usedName
-                }
-                
-            }
-            localWidth = localWidth - gap - size
-            
-            if z == 5 {
-                localWidth = width / 2 - size / 2
-                localHeight -= (gap + size)
-            }
+
+            BubbleWord.nodes.append(tempLetterObject)
+            addChild(tempLetterObject.spriteNode)
         }
     }
     
- 
     func initialize(){
         check.position = CGPoint(x: 137.5, y: -337.847)
         check.zPosition = 1
@@ -400,11 +330,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         Ball.zPosition = 0
         Ball.physicsBody?.mass = 0.0997
         Ball.name = "Ball"
-        let size = width/8
-        let gap = 2 * size / 5
-        var localWidth = width / 2 - size / 2
-        //look into if can detect notch
-        var localHeight = height / 2 - size / 2 - 50
         word = SKLabelNode(text: "")
         word.fontName = "Microsoft Sans Serif"
         word.fontSize = 18.0
@@ -415,60 +340,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score.fontSize = 18.0
         score.position = CGPoint(x: -1 * (localWidth - 10), y: localHeight + 30)
         addChild(score)
-       
         var n = 0
-        
-        while n < 30 {
-            
-            let randomInt = Int.random(in: 0...100)
-            let random = weighted[randomInt]
-            
-            if used[random] == 0 {
-                BubbleWord.nodes[random] = SKSpriteNode(imageNamed: letters[random])
-                BubbleWord.nodes[random].name = letters[random]
-                BubbleWord.nodes[random].size = CGSize(width: size, height: size)
-                BubbleWord.nodes[random].position = CGPoint(x: localWidth, y: localHeight)
-                BubbleWord.nodes[random].physicsBody = SKPhysicsBody(rectangleOf: BubbleWord.nodes[random].size)
-                BubbleWord.nodes[random].physicsBody?.contactTestBitMask = BubbleWord.nodes[random].physicsBody?.collisionBitMask ?? 0
-                BubbleWord.nodes[random].physicsBody?.affectedByGravity = false
-                BubbleWord.nodes[random].zPosition = 0
-                BubbleWord.nodes[random].physicsBody?.isDynamic = false
-                addChild(BubbleWord.nodes[random])
-                used[random] += 1
-            }
-            else {
-                var usedNum = used[random]
-                var usedName = letters[random]
-                while usedNum > 0 {
-                    usedName += letters[random]
-                    usedNum -= 1
+            while n < 30 {
+                let randomInt = Int.random(in: 0...100)
+                let random = weighted[randomInt]
+                let tempLetterObject = Letters(letterVal: letters[random], scrab: scrabble[random])
+                n+=1
+                tempLetterObject.spriteNode.size = CGSize(width: Size, height: Size)
+                tempLetterObject.spriteNode.position = CGPoint(x: localWidth, y: localHeight)
+                tempLetterObject.spriteNode.physicsBody?.isDynamic = false
+                tempLetterObject.spriteNode.physicsBody = SKPhysicsBody(rectangleOf: tempLetterObject.spriteNode.size)
+                tempLetterObject.spriteNode.physicsBody?.contactTestBitMask = tempLetterObject.spriteNode.physicsBody?.collisionBitMask ?? 0
+                tempLetterObject.spriteNode.physicsBody?.affectedByGravity = false
+                tempLetterObject.spriteNode.zPosition = 0
+                tempLetterObject.spriteNode.name = tempLetterObject.letter
+                BubbleWord.nodes.append(tempLetterObject)
+                addChild(tempLetterObject.spriteNode)
+                localWidth = localWidth - gap - Size
+                if n % 6 == 0 {
+                    localWidth = width / 2 - Size / 2
+                    localHeight -= (gap + Size)
                 }
-                let numberOf = BubbleWord.nodes.count
-                var testL = SKSpriteNode(imageNamed:letters[random])
-                testL = SKSpriteNode(imageNamed: letters[random])
-                testL.size = CGSize(width: size, height: size)
-                testL.position = CGPoint(x: localWidth, y: localHeight)
-                testL.physicsBody = SKPhysicsBody(rectangleOf: testL.size)
-                testL.physicsBody?.contactTestBitMask = testL.physicsBody?.collisionBitMask ?? 0
-                testL.physicsBody?.affectedByGravity = false
-                testL.physicsBody?.isDynamic = false
-                testL.zPosition = 0
-                BubbleWord.nodes.append(testL)
-                BubbleWord.nodes[numberOf].name = usedName
-                addChild(BubbleWord.nodes[numberOf])
-                BubbleWord.nodes[numberOf].name = usedName
             }
-            
-            
-            n+=1
-            
-            localWidth = localWidth - gap - size
-            
-            if n % 6 == 0 {
-                localWidth = width / 2 - size / 2
-                localHeight -= (gap + size)
-            }
-        }  
     }
 }
 
