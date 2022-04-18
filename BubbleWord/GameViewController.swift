@@ -2,9 +2,8 @@
 //  GameViewController.swift
 //  BubbleWord
 //
-//  Created by 90306561 on 4/11/22.
+//  Created by 90306561 on 3/16/22.
 //
-
 import UIKit
 import SpriteKit
 import GameplayKit
@@ -14,21 +13,28 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let view = self.view as! SKView? {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
+        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
+        // including entities and graphs.
+            
+            // Get the SKScene from the loaded GKScene
                 
                 // Present the scene
-                view.presentScene(scene)
-            }
+                if let view = self.view as! SKView? {
+                    // Load the SKScene from 'GameScene.sks'
+                    let scene = MainMenuScene(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+                        // Set the scale mode to scale to fit the window
+                        scene.scaleMode = .aspectFill
+                        
+                        // Present the scene
+                        view.presentScene(scene)
+                    
+                    
+                    view.ignoresSiblingOrder = true
+                    
+                    view.showsFPS = true
+                    view.showsNodeCount = true
+                }
             
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
     }
 
     override var shouldAutorotate: Bool {

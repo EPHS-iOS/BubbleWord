@@ -15,9 +15,6 @@ var localWidth = width / 2 - Size / 2
 //look into if can detect notch
 var localHeight = height / 2 - Size / 2 - 50
 
-
-//let allWords: [[String]] = [wordsA, wordsB, wordsC, wordsD, wordsE, wordsF, wordsG, wordsH, wordsI, wordsJ, wordsK, wordsL, wordsM, wordsN, wordsO, wordsP, wordsQ, wordsR, wordsS, wordsT, wordsU, vwxyzWords]
-
 var cancelMode = false
 
 var word : SKLabelNode!
@@ -64,20 +61,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func findList(length: Int) -> [String]{
-        var index = 0
-        var isFound = false
-        while(!isFound){
-           let tempWords = allNewWords[index]
-            if(length == tempWords.count){
-                isFound = true
-                return allNewWords[index]
-            }
-            index += 1
-        }
-    }
-    
-    
     // Touches Functions
     
     
@@ -108,11 +91,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                                 quickboolean = true
                                             }
                                         }
-                                        print(positionlet)
-                                        print(allNewWords[positionlet].count - 1)
                                         for n in 0...(allNewWords[positionlet].count - 1) {
-                                            print(allNewWords[positionlet][n])
-                                            if allNewWords[positionlet][n].localizedUppercase == word.text! && positionlet != -1 {
+                                            if allNewWords[positionlet][n].localizedUppercase == word.text! {
                                                 scoreInt += scrabVal()
                                                 score.text = "Score: " + String(scoreInt)
                                                 XWords.removeAll()
@@ -172,6 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(BS)
                 dx = theta * 360 * -1
                 Ball.physicsBody?.velocity = CGVector(dx: theta * 360 * -1, dy: 350)
+                dy = Ball.physicsBody?.velocity.dy
             }
         }
     }
@@ -247,19 +228,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             }
             }
         else {
-            dy = Ball.physicsBody?.velocity.dy
             if Ball.position.y >= height / 2 - 22 {
+                dy = Ball.physicsBody?.velocity.dy
+                dx = Ball.physicsBody?.velocity.dy
                 Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: dy! * -1)
                 scoreInt += 1
                 score.text = "Score: " + String(scoreInt)
             }
             else if Ball.position.y <= ((height / 2) * -1) - 22 {
+                dy = Ball.physicsBody?.velocity.dy
+                dx = Ball.physicsBody?.velocity.dy
                 Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: dy! * -1)
                 scoreInt += 1
                 score.text = "Score: " + String(scoreInt)
             }
             else {
                 Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: dy!)
+                dx = Ball.physicsBody?.velocity.dy
                 scoreInt += 1
                 score.text = "Score: " + String(scoreInt)
             }
@@ -274,21 +259,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 n -= 1
             }
             else {
-                //end game
+                runGameOver()
             }
         }
+        n = 0
+        localWidth = width / 2 - Size / 2
+        localHeight = height / 2 - Size / 2 - 50
         for _ in 0...11 {
             let randomInt = Int.random(in: 0...100)
             let random = weighted[randomInt]
             let tempLetterObject = Letters(letterVal: letters[random], scrab: scrabble[random])
+            n+=1
+            tempLetterObject.spriteNode.size = CGSize(width: Size, height: Size)
+            tempLetterObject.spriteNode.position = CGPoint(x: localWidth, y: localHeight)
+            tempLetterObject.spriteNode.physicsBody?.isDynamic = false
+            tempLetterObject.spriteNode.physicsBody = SKPhysicsBody(rectangleOf: tempLetterObject.spriteNode.size)
+            tempLetterObject.spriteNode.physicsBody?.contactTestBitMask = tempLetterObject.spriteNode.physicsBody?.collisionBitMask ?? 0
+            tempLetterObject.spriteNode.physicsBody?.affectedByGravity = false
+            tempLetterObject.spriteNode.zPosition = 0
+            tempLetterObject.spriteNode.name = tempLetterObject.letter
+            BubbleWord.nodes.append(tempLetterObject)
+            addChild(tempLetterObject.spriteNode)
             localWidth = localWidth - gap - Size
             if n % 6 == 0 {
                 localWidth = width / 2 - Size / 2
                 localHeight -= (gap + Size)
             }
-
-            BubbleWord.nodes.append(tempLetterObject)
-            addChild(tempLetterObject.spriteNode)
         }
     }
     
@@ -345,6 +341,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
     }
-}
 
+
+func runGameOver(){
+       let changeSceneAction = SKAction.run(changeScene)
+       let waitAction = SKAction.wait(forDuration: 1)
+       let changeSequence = SKAction.sequence([waitAction, changeSceneAction])
+       self.run(changeSequence)
+       changeScene()
+   }
+    func changeScene(){
+           let sceneToMoveTo = MainMenuScene(size: self.size)
+           sceneToMoveTo.scaleMode = .resizeFill
+           let transition1 = SKTransition.fade(withDuration: 0.6)
+           self.view!.presentScene(sceneToMoveTo, transition: transition1)
+              
+          }
+}
 //530
