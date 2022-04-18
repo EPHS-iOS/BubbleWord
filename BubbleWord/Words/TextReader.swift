@@ -42,7 +42,7 @@ func organize(data: String) -> [[String]]{//Organizes file data and sorts each w
     
     var wordGroups: [[String]] = [[]]
     
-    var editedData = data[data.index(data.startIndex, offsetBy: 1)..<data.index(data.endIndex, offsetBy: -2)]
+    var editedData: String = String(data[data.index(data.startIndex, offsetBy: 1)..<data.index(data.endIndex, offsetBy: -2)]).lowercased()
     
     var index = data.firstIndex(of: " ")
     
@@ -52,7 +52,7 @@ func organize(data: String) -> [[String]]{//Organizes file data and sorts each w
         
         let newWord = getWord(word: dataChunck)
         
-        editedData = editedData[editedData.index(editedData.startIndex, offsetBy: dataChunck.count)...]
+        editedData = String(editedData[editedData.index(editedData.startIndex, offsetBy: dataChunck.count)...])
         
         if (newWord[newWord.startIndex] == editedData[editedData.startIndex]){
             wordGroups[wordGroups.count - 1].append(newWord)
@@ -71,8 +71,17 @@ func organize(data: String) -> [[String]]{//Organizes file data and sorts each w
     }
     wordGroups[wordGroups.count - 1].append(String(editedData))
     
-    print(editedData)
+    print(wordGroups.count)
+    
     return wordGroups
+}
+
+func findWords(words: [[String]]){
+    for i in 0...words.count - 1 {
+        if(words[i].count == 1){
+            print(words[i])
+        }
+    }
 }
 
 func getWord(word: String) -> String{
