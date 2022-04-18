@@ -16,7 +16,7 @@ var localWidth = width / 2 - Size / 2
 var localHeight = height / 2 - Size / 2 - 50
 
 
-let allWords: [[String]] = [wordsA, wordsB, wordsC, wordsD, wordsE, wordsF, wordsG, wordsH, wordsI, wordsJ, wordsK, wordsL, wordsM, wordsN, wordsO, wordsP, wordsQ, wordsR, wordsS, wordsT, wordsU, vwxyzWords]
+//let allWords: [[String]] = [wordsA, wordsB, wordsC, wordsD, wordsE, wordsF, wordsG, wordsH, wordsI, wordsJ, wordsK, wordsL, wordsM, wordsN, wordsO, wordsP, wordsQ, wordsR, wordsS, wordsT, wordsU, vwxyzWords]
 
 var cancelMode = false
 
@@ -46,30 +46,7 @@ var ZRot = false
 var ballCount = 0
 
 var dx : CGFloat?
-
-let aCount = wordsA.count
-let bCount = wordsB.count
-let cCount = wordsC.count
-let dCount = wordsD.count
-let eCount = wordsE.count
-let fCount = wordsF.count
-let gCount = wordsG.count
-let hCount = wordsH.count
-let iCount = wordsI.count
-let jCount = wordsJ.count
-let kCount = wordsK.count
-let lCount = wordsL.count
-let mCount = wordsM.count
-let nCount = wordsN.count
-let oCount = wordsO.count
-let pCount = wordsP.count
-let qCount = wordsQ.count
-let rCount = wordsR.count
-let sCount = wordsS.count
-let tCount = wordsT.count
-let uCount = wordsU.count
-let vwxyzCount = vwxyzWords.count
-let count: [Int] = [aCount, bCount, cCount, dCount, eCount, fCount, gCount, hCount, iCount, jCount, kCount, lCount, mCount, nCount, oCount, pCount, qCount, rCount, sCount, tCount, uCount, vwxyzCount, vwxyzCount, vwxyzCount, vwxyzCount, vwxyzCount]
+var dy : CGFloat?
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     private var label : SKLabelNode?
@@ -91,10 +68,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var index = 0
         var isFound = false
         while(!isFound){
-           let tempWords = allWords[index]
+           let tempWords = allNewWords[index]
             if(length == tempWords.count){
                 isFound = true
-                return allWords[index]
+                return allNewWords[index]
             }
             index += 1
         }
@@ -123,20 +100,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 else {
                                     if word.text != "" {
                                         let firstLetter = word.text!.prefix(1)
-                                        var position = -1
+                                        var positionlet = -1
                                         var quickboolean = false
                                         while (!quickboolean) {
-                                            position += 1
-                                            if firstLetter == letters[position] {
+                                            positionlet += 1
+                                            if firstLetter == letters[positionlet] {
                                                 quickboolean = true
                                             }
                                         }
-                                        
-                                        
-                                        var tempArray: [String]
-                                        tempArray = findList(length: count[position])
-                                        for n in 0...(tempArray.count - 1) {
-                                            if tempArray[n].localizedUppercase == word.text! {
+                                        print(positionlet)
+                                        print(allNewWords[positionlet].count - 1)
+                                        for n in 0...(allNewWords[positionlet].count - 1) {
+                                            print(allNewWords[positionlet][n])
+                                            if allNewWords[positionlet][n].localizedUppercase == word.text! && positionlet != -1 {
                                                 scoreInt += scrabVal()
                                                 score.text = "Score: " + String(scoreInt)
                                                 XWords.removeAll()
@@ -271,13 +247,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             }
             }
         else {
-            if Ball.position.y >= height / 2 - 22 || Ball.position.y <= ((height / 2) * -1) - 22{
-                Ball.physicsBody?.velocity = CGVector(dx: dx!, dy: -350)
+            dy = Ball.physicsBody?.velocity.dy
+            if Ball.position.y >= height / 2 - 22 {
+                Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: dy! * -1)
+                scoreInt += 1
+                score.text = "Score: " + String(scoreInt)
+            }
+            else if Ball.position.y <= ((height / 2) * -1) - 22 {
+                Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: dy! * -1)
                 scoreInt += 1
                 score.text = "Score: " + String(scoreInt)
             }
             else {
-                Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: 350)
+                Ball.physicsBody?.velocity = CGVector(dx: dx! * -1, dy: dy!)
                 scoreInt += 1
                 score.text = "Score: " + String(scoreInt)
             }
