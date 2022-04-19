@@ -18,9 +18,5 @@ class Letters: ObservableObject{
         letter = letterVal
         scrabble = scrab
         spriteNode = SKSpriteNode(imageNamed: letter)
-        initialize()
-    }
-    func initialize() {
-        
     }
 }
