@@ -259,7 +259,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 n -= 1
             }
             else {
-                runGameOver()
+                print("HI")
+                let sceneToMoveTo = EndScene(size: self.size)
+                sceneToMoveTo.scaleMode = .resizeFill
+                let transition1 = SKTransition.fade(withDuration: 0.6)
+                self.view!.presentScene(sceneToMoveTo, transition: transition1)
+                return
             }
         }
         n = 0
@@ -272,10 +277,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             n+=1
             tempLetterObject.spriteNode.size = CGSize(width: Size, height: Size)
             tempLetterObject.spriteNode.position = CGPoint(x: localWidth, y: localHeight)
-            tempLetterObject.spriteNode.physicsBody?.isDynamic = false
             tempLetterObject.spriteNode.physicsBody = SKPhysicsBody(rectangleOf: tempLetterObject.spriteNode.size)
             tempLetterObject.spriteNode.physicsBody?.contactTestBitMask = tempLetterObject.spriteNode.physicsBody?.collisionBitMask ?? 0
             tempLetterObject.spriteNode.physicsBody?.affectedByGravity = false
+            tempLetterObject.spriteNode.physicsBody?.isDynamic = false
             tempLetterObject.spriteNode.zPosition = 0
             tempLetterObject.spriteNode.name = tempLetterObject.letter
             BubbleWord.nodes.append(tempLetterObject)
@@ -326,10 +331,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 n+=1
                 tempLetterObject.spriteNode.size = CGSize(width: Size, height: Size)
                 tempLetterObject.spriteNode.position = CGPoint(x: localWidth, y: localHeight)
-                tempLetterObject.spriteNode.physicsBody?.isDynamic = false
                 tempLetterObject.spriteNode.physicsBody = SKPhysicsBody(rectangleOf: tempLetterObject.spriteNode.size)
                 tempLetterObject.spriteNode.physicsBody?.contactTestBitMask = tempLetterObject.spriteNode.physicsBody?.collisionBitMask ?? 0
                 tempLetterObject.spriteNode.physicsBody?.affectedByGravity = false
+                tempLetterObject.spriteNode.physicsBody?.isDynamic = false
                 tempLetterObject.spriteNode.zPosition = 0
                 tempLetterObject.spriteNode.name = tempLetterObject.letter
                 BubbleWord.nodes.append(tempLetterObject)
@@ -343,19 +348,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
 
-func runGameOver(){
-       let changeSceneAction = SKAction.run(changeScene)
-       let waitAction = SKAction.wait(forDuration: 1)
-       let changeSequence = SKAction.sequence([waitAction, changeSceneAction])
-       self.run(changeSequence)
-       changeScene()
-   }
-    func changeScene(){
-           let sceneToMoveTo = MainMenuScene(size: self.size)
-           sceneToMoveTo.scaleMode = .resizeFill
-           let transition1 = SKTransition.fade(withDuration: 0.6)
-           self.view!.presentScene(sceneToMoveTo, transition: transition1)
-              
-          }
+    func runGameOver(){
+            let changeSceneAction = SKAction.run(changeScene)
+            let waitAction = SKAction.wait(forDuration: 1)
+            let changeSequence = SKAction.sequence([waitAction, changeSceneAction])
+            self.run(changeSequence)
+            changeScene()
+        }
+        
+        func changeScene(){
+            let sceneToMoveTo = MainMenuScene(size: self.size)
+            sceneToMoveTo.scaleMode = .resizeFill
+            let transition1 = SKTransition.fade(withDuration: 0.6)
+            self.view!.presentScene(sceneToMoveTo, transition: transition1)
+               
+           }
 }
 //530
