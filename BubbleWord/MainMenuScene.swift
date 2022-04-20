@@ -9,6 +9,9 @@ import UIKit
 import SpriteKit
 import GameplayKit
 
+let directions = SKSpriteNode(imageNamed: "Directions")
+let startGame = SKLabelNode()
+
 class MainMenuScene: SKScene{
     override func didMove(to view: SKView) {
 //        let background = SKSpriteNode(imageNamed: "background")
@@ -26,7 +29,7 @@ class MainMenuScene: SKScene{
         title1.position = CGPoint(x: self.size.width/2, y: self.size.height * 0.65)
         self.addChild(title1)
         
-        let startGame = SKLabelNode()
+        
         startGame.fontSize = 75
         startGame.fontColor = SKColor.white
         startGame.text = "Start Game"
@@ -36,21 +39,39 @@ class MainMenuScene: SKScene{
         startGame.position = CGPoint(x: self.size.width/2, y: self.size.height * 0.4)
         self.addChild(startGame)
         
+        directions.position = CGPoint(x: size.width/2, y: size.height * 0.1)
+        addChild(directions)
+        
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch: AnyObject in touches{
-            let pointOfTouch = touch.location(in: self)
-            let nodeITapped = atPoint(pointOfTouch)
-            if nodeITapped.name == "Start Button"{
-                let scene = GKScene(fileNamed: "GameScene")
-                let sceneToMoveTo = scene!.rootNode as! GameScene
-                sceneToMoveTo.scaleMode = .fill
-                //let myTransition = SKTransition.fade(withDuration: 0.5)
-                self.view!.presentScene(sceneToMoveTo)
-                //transition: myTransition
+        
+            if let touch = touches.first {
+            let touchLocation = touch.location(in: self)
+            let touchedWhere = nodes(at: touchLocation)
+            if !touchedWhere.isEmpty {
+                for node in touchedWhere {
+                    if let sprite = node as? SKSpriteNode {
+                        if sprite == directions {
+                            let sceneToMoveTo = Info(size: self.size)
+                            sceneToMoveTo.scaleMode = .resizeFill
+                            let transition1 = SKTransition.fade(withDuration: 0.6)
+                            self.view!.presentScene(sceneToMoveTo, transition: transition1)
+                            }
+                        
+                        }
+                    else if let sprite = node as? SKLabelNode {
+                        if sprite == startGame {
+                            let scene = GKScene(fileNamed: "GameScene")
+                            let sceneToMoveTo = scene!.rootNode as! GameScene
+                            sceneToMoveTo.scaleMode = .fill
+                            //let myTransition = SKTransition.fade(withDuration: 0.5)
+                            self.view!.presentScene(sceneToMoveTo)
+                            //transition: myTransition
+                        }
+                    }
+                    }
+                }
             }
-            
-        }
         
         
         

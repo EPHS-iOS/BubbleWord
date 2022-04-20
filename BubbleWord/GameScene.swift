@@ -260,11 +260,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             else {
                 print("HI")
-                let sceneToMoveTo = EndScene(size: self.size)
-                sceneToMoveTo.scaleMode = .resizeFill
-                let transition1 = SKTransition.fade(withDuration: 0.6)
-                self.view!.presentScene(sceneToMoveTo, transition: transition1)
-                return
+                changeScene()
             }
         }
         n = 0
@@ -357,7 +353,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         func changeScene(){
-            let sceneToMoveTo = MainMenuScene(size: self.size)
+            let sceneToMoveTo = EndScene(size: self.size)
             sceneToMoveTo.scaleMode = .resizeFill
             let transition1 = SKTransition.fade(withDuration: 0.6)
             self.view!.presentScene(sceneToMoveTo, transition: transition1)
