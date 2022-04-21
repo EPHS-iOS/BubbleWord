@@ -15,17 +15,15 @@ var localWidth = width / 2 - Size / 2
 //look into if can detect notch
 var localHeight = height / 2 - Size / 2 - 50
 
-var cancelMode = false
+let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
 
+var cancelMode = false
 var word : SKLabelNode!
 var score : SKLabelNode!
 var scoreInt = 0
-var val = 0
 
 let letters: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-
 let weighted: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 10, 11, 11, 11, 11, 12, 12, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 16, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 21, 22, 22, 23, 24, 24, 25]
-
 let scrabble: [Int] = [1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10]
 
 var nodes: [Letters] = []
@@ -33,32 +31,25 @@ var XWords: [Letters] = []
 
 var check = SKSpriteNode(imageNamed: "check")
 var cancel = SKSpriteNode(imageNamed: "Xulu")
-
 var Shooter = SKSpriteNode(imageNamed: "Shooter")
 var BS = SKSpriteNode(imageNamed: "BS")
 var Ball = SKSpriteNode(imageNamed: "Ball")
 
-var OG : CGPoint?
-var ZRot = false
+var hasHit = true
+var ZRot = true
 var ballCount = 0
 
 var dx : CGFloat?
 var dy : CGFloat?
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
     
-    let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
+    
     
     override func didMove(to view: SKView) {
-        
-        
         physicsWorld.contactDelegate = self
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-        
         initialize()
-        
     }
     
     // Touches Functions
@@ -68,8 +59,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let touch = touches.first {
         let touchLocation = touch.location(in: self)
         let touchedWhere = nodes(at: touchLocation)
-            ZRot = false
-            OG = touchLocation
             if !touchedWhere.isEmpty {
                     for node in touchedWhere {
                         if let sprite = node as? SKSpriteNode {
@@ -129,16 +118,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let touchLocation = touch.location(in: self)
-            shooter(touchLocation: touchLocation)
+        if let touch = touches.first  {
+            if hasHit {
+                shooter(touchLocation: touch.location(in: self))
+            }
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let touchLocation = touch.location(in: self)
-            if ZRot {
+            if hasHit && ZRot {
                 let x1 = touchLocation.x
                 let y1 = touchLocation.y + 321
                 let theta = -1 * atan(x1/y1)
@@ -153,7 +143,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 dx = theta * 360 * -1
                 Ball.physicsBody?.velocity = CGVector(dx: theta * 360 * -1, dy: 350)
                 dy = Ball.physicsBody?.velocity.dy
+                hasHit = false
+                ZRot = false
             }
+                
         }
     }
     
@@ -209,6 +202,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func collision(between Ball: SKNode, object: SKNode) {
         let n = letterNum(object: object)
             if n != -1 {
+                hasHit = true
                 Ball.removeFromParent()
                 BS.removeFromParent()
                 Shooter.removeFromParent()
@@ -259,8 +253,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 n -= 1
             }
             else {
-                print("HI")
-                changeScene()
+                let sceneToMoveTo = EndScene(size: self.size)
+                sceneToMoveTo.scaleMode = .resizeFill
+                let transition1 = SKTransition.fade(withDuration: 0.6)
+                self.view!.presentScene(sceneToMoveTo, transition: transition1)
             }
         }
         n = 0
@@ -342,22 +338,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
     }
-
-
-    func runGameOver(){
-            let changeSceneAction = SKAction.run(changeScene)
-            let waitAction = SKAction.wait(forDuration: 1)
-            let changeSequence = SKAction.sequence([waitAction, changeSceneAction])
-            self.run(changeSequence)
-            changeScene()
-        }
-        
-        func changeScene(){
-            let sceneToMoveTo = EndScene(size: self.size)
-            sceneToMoveTo.scaleMode = .resizeFill
-            let transition1 = SKTransition.fade(withDuration: 0.6)
-            self.view!.presentScene(sceneToMoveTo, transition: transition1)
-               
-           }
 }
 //530
+//363
