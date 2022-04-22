@@ -38,59 +38,28 @@ func readFile(inputFile: String) -> String{ //Finds and reads the file from the 
     return readStringProject
 }
 
-func organize(data: String) -> [[String]]{//Organizes file data and sorts each word with the same first letter into the same array
+func organize(data: String) -> [[String]]{
+    
+    let editedData = data[data.index(data.startIndex, offsetBy: 1)..<data.index(data.endIndex, offsetBy: -2)].lowercased()
+    
+    var lastWord = "a"
+    
+    var allWords: [String] = editedData.components(separatedBy: "\", \"")
     
     var wordGroups: [[String]] = [[]]
     
-    var editedData: String = String(data[data.index(data.startIndex, offsetBy: 1)..<data.index(data.endIndex, offsetBy: -2)]).lowercased()
-    
-    var index = data.firstIndex(of: " ")
-    
-    var dataChunck: String = String(editedData[...editedData.index(index!, offsetBy: 1)])
-    
-    while index != nil{
+    while allWords.count > 0 {
         
-        let newWord = getWord(word: dataChunck)
-        
-        editedData = String(editedData[editedData.index(editedData.startIndex, offsetBy: dataChunck.count)...])
-        
-        if (newWord[newWord.startIndex] == editedData[editedData.startIndex]){
-            wordGroups[wordGroups.count - 1].append(newWord)
-        }
-        else {
-            wordGroups[wordGroups.count - 1].append(newWord)
+        if(lastWord[lastWord.startIndex] != allWords[0][allWords[0].startIndex]){
             wordGroups.append([])
         }
         
-        index = editedData.firstIndex(of: " ")
-         
-        if(index != nil){
-            dataChunck = String(editedData[...editedData.index(index!, offsetBy: 1)])
-        }
+        wordGroups[wordGroups.count - 1].append(allWords.removeFirst())
         
+        lastWord = wordGroups[wordGroups.count - 1][wordGroups[wordGroups.count - 1].count - 1]
     }
-    wordGroups[wordGroups.count - 1].append(String(editedData))
-    
     print(wordGroups.count)
-    
     return wordGroups
-}
-
-func findWords(words: [[String]]){
-    for i in 0...words.count - 1 {
-        if(words[i].count == 1){
-            print(words[i])
-        }
-    }
-}
-
-func getWord(word: String) -> String{
-    
-    let index = word.firstIndex(of: "\"")
-    
-    let newWord = word[..<index!]
-    
-    return String(newWord)
 }
 
 func getCount(data: [[String]]) -> [Int]{ //Returns an array with the counts of a 2D arrays contents
