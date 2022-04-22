@@ -22,3 +22,12 @@ This was my first app that I developed with a team. The game uses a bubble shoot
   - Improved direction of ball shooting (again)
   - Fixed various bugs
   - The ball now bounces of the walls
+
+- 4.0
+  - Added Start Menu
+  - Added Direction Menu
+  - Added End Game Menu
+  - Ball bounces of ALL the walls
+  - Improved shooting accuracy
+  - Fixed various bugs
+  - Improved efficiency
