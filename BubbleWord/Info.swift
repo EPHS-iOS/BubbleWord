@@ -17,7 +17,6 @@ class Info: SKScene{
     
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor.systemBlue
-        
         let title = SKLabelNode(text: "Directions")
         title.position = CGPoint(x: self.size.width/2, y: self.size.height * 0.90)
         title.fontName = "Microsoft Sans Serif"

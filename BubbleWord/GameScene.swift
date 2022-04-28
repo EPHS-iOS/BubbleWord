@@ -34,6 +34,8 @@ var cancel = SKSpriteNode(imageNamed: "Xulu")
 var Shooter = SKSpriteNode(imageNamed: "Shooter")
 var BS = SKSpriteNode(imageNamed: "BS")
 var Ball = SKSpriteNode(imageNamed: "Ball")
+//var help = SKSpriteNode(imageNamed: "help")
+//var sBall = SKSpriteNode(imageNamed: "sBall")
 
 var hasHit = true
 var ZRot = true
@@ -43,7 +45,6 @@ var dx : CGFloat?
 var dy : CGFloat?
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
     
     
     override func didMove(to view: SKView) {
@@ -112,6 +113,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 }
                                 else{cancelMode = true}
                             }
+//                            if sprite == sBall {
+//                                sBall.removeFromParent()
+//                                addChild(help)
+//                                help.run(SKAction.scaleY(to: 3, duration: 0.125)
+//                            }
                         }
                     }
                 }
@@ -248,6 +254,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func addSquares() {
         var n = BubbleWord.nodes.count - 1
+        
         while n >= 0 {
             if BubbleWord.nodes[n].spriteNode.position.y > -198 {
                 BubbleWord.nodes[n].spriteNode.position.y -= CGFloat(((gap + Size) * 2))
@@ -287,6 +294,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func initialize(){
+//        help.size = CGSize(width: 50, height: 50)
+//        help.position = CGPoint(x: width / 2 - 50, y: 0)
+//        sBall.size = CGSize(width: 50, height: 50)
+//        sBall.position = CGPoint(x: width / 2 - 50, y: 0)
+//        addChild(sBall)
         check.position = CGPoint(x: 137.5, y: -337.847)
         check.zPosition = 1
         addChild(check)
