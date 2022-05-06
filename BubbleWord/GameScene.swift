@@ -143,12 +143,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 Ball.removeFromParent()
                 BS.removeFromParent()
                 BS.zRotation = Shooter.zRotation
-                Ball.position = CGPoint(x: theta, y: -321)
-                Ball.zRotation = theta
+                Ball.position = CGPoint(x: 0, y: size.width * -1)
+                //Ball.zRotation = theta
                 addChild(Ball)
                 addChild(BS)
                 dx = theta * 360 * -1
-                Ball.physicsBody?.velocity = CGVector(dx: theta * 360 * -1, dy: 350)
+                Ball.physicsBody?.velocity = CGVector(dx: theta * 57.2958 * -1, dy: 350)
                 dy = Ball.physicsBody?.velocity.dy
                 hasHit = false
                 ZRot = false
@@ -281,7 +281,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             tempLetterObject.spriteNode.physicsBody?.contactTestBitMask = tempLetterObject.spriteNode.physicsBody?.collisionBitMask ?? 0
             tempLetterObject.spriteNode.physicsBody?.affectedByGravity = false
             tempLetterObject.spriteNode.physicsBody?.isDynamic = false
-            tempLetterObject.spriteNode.zPosition = 0
+            tempLetterObject.spriteNode.zPosition = 1
             tempLetterObject.spriteNode.name = tempLetterObject.letter
             BubbleWord.nodes.append(tempLetterObject)
             addChild(tempLetterObject.spriteNode)
@@ -305,17 +305,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cancel.position = CGPoint(x: -137.5, y: -337.847)
         cancel.zPosition = 1
         addChild(cancel)
-        Shooter.size = CGSize(width: 78, height: 108)
-        Shooter.position = CGPoint(x: 0, y: -321)
+        Shooter.size = CGSize(width: 180, height: 185)
+        Shooter.anchorPoint = CGPoint(x: 0.5, y: 0)
+        Shooter.position = CGPoint(x: 0, y: size.width * -1)
         addChild(Shooter)
-        BS.size = CGSize(width: 78, height: 108)
-        BS.position = CGPoint(x: 0, y: -321)
+        BS.size = CGSize(width: 180, height: 185)
+        BS.anchorPoint = CGPoint(x: 0.5, y: 0)
+        BS.position = CGPoint(x: 0, y: size.width * -1)
         BS.zPosition = 1
         Ball.size = CGSize(width: 35, height: 35)
         Ball.physicsBody = SKPhysicsBody(circleOfRadius: 17.5)
         Ball.physicsBody?.contactTestBitMask = Ball.physicsBody?.collisionBitMask ?? 0
         Ball.physicsBody?.affectedByGravity = false
-        Ball.zPosition = 0
+        Ball.zPosition = 1
         Ball.physicsBody?.mass = 0.0997
         Ball.name = "Ball"
         word = SKLabelNode(text: "")
@@ -340,7 +342,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 tempLetterObject.spriteNode.physicsBody?.contactTestBitMask = tempLetterObject.spriteNode.physicsBody?.collisionBitMask ?? 0
                 tempLetterObject.spriteNode.physicsBody?.affectedByGravity = false
                 tempLetterObject.spriteNode.physicsBody?.isDynamic = false
-                tempLetterObject.spriteNode.zPosition = 0
+                tempLetterObject.spriteNode.zPosition = 1
                 tempLetterObject.spriteNode.name = tempLetterObject.letter
                 BubbleWord.nodes.append(tempLetterObject)
                 addChild(tempLetterObject.spriteNode)
