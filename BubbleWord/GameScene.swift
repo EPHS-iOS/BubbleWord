@@ -148,7 +148,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(Ball)
                 addChild(BS)
                 dx = theta * 360 * -1
-                Ball.physicsBody?.velocity = CGVector(dx: theta * 57.2958 * -1, dy: 350)
+                Ball.physicsBody?.velocity = CGVector(dx: theta *360* -1, dy: 350)
                 dy = Ball.physicsBody?.velocity.dy
                 hasHit = false
                 ZRot = false
@@ -354,5 +354,3 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
     }
 }
-//530
-//363
