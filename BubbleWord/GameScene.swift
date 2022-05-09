@@ -295,6 +295,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func initialize(){
+        let backGround: SKSpriteNode = SKSpriteNode(imageNamed: "background_BubbleWords_001")
+        //backGround.position = CGPoint(x: 0, y: height / 8)
+        backGround.setScale(0.25)
+        backGround.yScale = CGFloat(0.3)
+        addChild(backGround)
 //        help.size = CGSize(width: 50, height: 50)
 //        help.position = CGPoint(x: width / 2 - 50, y: 0)
 //        sBall.size = CGSize(width: 50, height: 50)
