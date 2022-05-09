@@ -330,11 +330,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         word.fontName = "Microsoft Sans Serif"
         word.fontSize = 18.0
         word.position = CGPoint(x: localWidth - 10, y: localHeight + 30)
+        word.fontColor = UIColor.black
         addChild(word)
         score = SKLabelNode(text: "Score: 0")
         score.fontName = "Microsoft Sans Serif"
         score.fontSize = 18.0
-        score.position = CGPoint(x: -1 * (localWidth - 10), y: localHeight + 30)
+        score.position = CGPoint(x: -1 * (localWidth - 15), y: localHeight + 30)
+        score.fontColor = UIColor.black
         addChild(score)
         var n = 0
             while n < 30 {
