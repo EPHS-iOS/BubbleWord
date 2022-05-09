@@ -7,8 +7,8 @@
 import SpriteKit
 import GameplayKit
 
-var width = UIScreen.main.bounds.width
-var height = UIScreen.main.bounds.height
+var width : CGFloat!
+var height : CGFloat!
 let Size = width/8
 let gap = 2 * Size / 5
 var localWidth = width / 2 - Size / 2
@@ -48,7 +48,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func didMove(to view: SKView) {
-        
+        width = size.width
+        height = size.height
         physicsWorld.contactDelegate = self
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         initialize()
@@ -148,7 +149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(Ball)
                 addChild(BS)
                 dx = theta * 360 * -1
-                Ball.physicsBody?.velocity = CGVector(dx: theta *360* -1, dy: 350)
+                Ball.physicsBody?.velocity = CGVector(dx: theta * 360 * -1, dy: 350)
                 dy = Ball.physicsBody?.velocity.dy
                 hasHit = false
                 ZRot = false
@@ -299,10 +300,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        sBall.size = CGSize(width: 50, height: 50)
 //        sBall.position = CGPoint(x: width / 2 - 50, y: 0)
 //        addChild(sBall)
-        check.position = CGPoint(x: 137.5, y: -337.847)
+        check.position = CGPoint(x: (size.width / 2) * 0.7, y: (size.height / 2) * -0.8)
         check.zPosition = 1
         addChild(check)
-        cancel.position = CGPoint(x: -137.5, y: -337.847)
+        cancel.position = CGPoint(x: (size.width / 2) * -0.7, y: (size.height / 2) * -0.8)
         cancel.zPosition = 1
         addChild(cancel)
         Shooter.size = CGSize(width: 180, height: 185)
