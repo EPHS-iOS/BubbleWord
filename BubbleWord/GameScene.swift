@@ -46,6 +46,7 @@ var dy : CGFloat?
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
     
     override func didMove(to view: SKView) {
         width = size.width
