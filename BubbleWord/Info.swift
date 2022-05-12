@@ -24,7 +24,7 @@ class Info: SKScene{
         addChild(title)
         
         let directions = SKLabelNode(text: "The goal of the game is to get as many points as possible. To get points, aim the shooter at a letter and spell out a word. When done, click the check mark and if it is a word, you'll get points for your word. Otherwise, you can click the big X and it'll replace the letters, but be careful, you lose points if you use it! If there's a letter you just can't use, click the X and enter cancel mode, where you can get rid of letters (this will lower your score). Have fun!")
-        directions.preferredMaxLayoutWidth = width - 10
+        directions.preferredMaxLayoutWidth = size.width - 10
         directions.numberOfLines = 14
         directions.position = CGPoint(x: self.size.width/2, y: self.size.height * 0.30)
         directions.fontName = "Microsoft Sans Serif"

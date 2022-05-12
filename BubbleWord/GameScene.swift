@@ -15,6 +15,8 @@ var localWidth = width / 2 - Size / 2
 //look into if can detect notch
 var localHeight = height / 2 - Size / 2 - 50
 
+var timer : Timer?
+
 let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
 
 var cancelMode = false
@@ -34,8 +36,13 @@ var cancel = SKSpriteNode(imageNamed: "Xulu")
 var Shooter = SKSpriteNode(imageNamed: "Shooter")
 var BS = SKSpriteNode(imageNamed: "BS")
 var Ball = SKSpriteNode(imageNamed: "Ball")
-//var help = SKSpriteNode(imageNamed: "help")
-//var sBall = SKSpriteNode(imageNamed: "sBall")
+
+var help = SKSpriteNode(imageNamed: "help")
+var menu = SKSpriteNode(imageNamed: "menu")
+var menuBubble = SKSpriteNode(imageNamed: "menuBubble")
+var helpBubble = SKSpriteNode(imageNamed: "helpBubble")
+var reset = SKSpriteNode(imageNamed: "reset")
+
 
 var hasHit = true
 var ZRot = true
@@ -114,11 +121,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 }
                                 else{cancelMode = true}
                             }
-//                            if sprite == sBall {
-//                                sBall.removeFromParent()
-//                                addChild(help)
-//                                help.run(SKAction.scaleY(to: 3, duration: 0.125)
-//                            }
+                            if sprite == menu {
+                                menu.removeFromParent()
+                                addChild(help)
+                                help.run(SKAction.scaleY(to: 3, duration: 0.125))
+                                timerMain()
+                            }
                         }
                     }
                 }
@@ -293,6 +301,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    @objc func addMenus() {
+        addChild(menuBubble)
+        addChild(helpBubble)
+        addChild(reset)
+    }
+
+    func timerMain(){
+        timer = Timer.scheduledTimer(timeInterval: 0.125, target: self, selector:
+                #selector(self.addMenus), userInfo: nil, repeats: false)
+    }
     
     func initialize(){
         let backGround: SKSpriteNode = SKSpriteNode(imageNamed: "background_BubbleWords_001")
@@ -300,11 +318,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         backGround.setScale(0.25)
         backGround.yScale = CGFloat(0.3)
         addChild(backGround)
-//        help.size = CGSize(width: 50, height: 50)
-//        help.position = CGPoint(x: width / 2 - 50, y: 0)
-//        sBall.size = CGSize(width: 50, height: 50)
-//        sBall.position = CGPoint(x: width / 2 - 50, y: 0)
-//        addChild(sBall)
+        help.size = CGSize(width: 40, height: 40)
+        help.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3)
+        help.zPosition = 2
+        menu.size = CGSize(width: 40, height: 40)
+        menu.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3)
+        addChild(menu)
+        menuBubble.size = CGSize(width: 40, height: 40)
+        menuBubble.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3)
+        helpBubble.size = CGSize(width: 40, height: 40)
+        helpBubble.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3 + 40)
+        reset.size = CGSize(width: 40, height: 40)
+        reset.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3 - 40)
         check.position = CGPoint(x: (size.width / 2) * 0.7, y: (size.height / 2) * -0.8)
         check.zPosition = 1
         addChild(check)
