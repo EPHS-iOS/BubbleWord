@@ -44,10 +44,19 @@ class Info: SKScene{
             for node in touchedWhere {
                 if let sprite = node as? SKSpriteNode {
                     if sprite == backNode {
-                        let sceneToMoveTo = MainMenuScene(size: self.size)
-                        sceneToMoveTo.scaleMode = .resizeFill
-                        let transition1 = SKTransition.fade(withDuration: 0.6)
-                        self.view!.presentScene(sceneToMoveTo, transition: transition1)
+                        if !helpVar{
+                            let sceneToMoveTo = MainMenuScene(size: self.size)
+                            sceneToMoveTo.scaleMode = .resizeFill
+                            let transition1 = SKTransition.fade(withDuration: 0.6)
+                            self.view!.presentScene(sceneToMoveTo, transition: transition1)
+                        }
+                        else {
+                            let scene = GKScene(fileNamed: "GameScene")
+                            let transition1 = SKTransition.fade(withDuration: 0.6)
+                            let sceneToMoveTo = scene!.rootNode as! GameScene
+                            sceneToMoveTo.scaleMode = .fill
+                            self.view!.presentScene(sceneToMoveTo, transition: transition1)
+                        }
                         }
                     }
                 }

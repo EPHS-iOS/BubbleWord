@@ -64,9 +64,7 @@ class MainMenuScene: SKScene{
                             let scene = GKScene(fileNamed: "GameScene")
                             let sceneToMoveTo = scene!.rootNode as! GameScene
                             sceneToMoveTo.scaleMode = .fill
-                            //let myTransition = SKTransition.fade(withDuration: 0.5)
                             self.view!.presentScene(sceneToMoveTo)
-                            //transition: myTransition
                         }
                     }
                     }

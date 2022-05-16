@@ -3,9 +3,11 @@
 //  jake-evan-erik
 //
 //  Created by 90306561 on 3/16/22.
-
 import SpriteKit
 import GameplayKit
+
+
+var helpVar = false
 
 var width : CGFloat!
 var height : CGFloat!
@@ -45,7 +47,7 @@ var reset = SKSpriteNode(imageNamed: "reset")
 
 
 var hasHit = true
-var ZRot = true
+var ZRot = false
 var ballCount = 0
 
 var dx : CGFloat?
@@ -125,7 +127,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 menu.removeFromParent()
                                 addChild(help)
                                 help.run(SKAction.scaleY(to: 3, duration: 0.125))
-                                timerMain()
+                                timerAdd()
+                            }
+                            if sprite == menuBubble {
+                                help.run(SKAction.scaleY(to: 0.3, duration: 0.125))
+                                timerRemove()
+                            }
+                            if sprite == helpBubble {
+                                helpVar = true
+                                let sceneToMoveTo = Info(size: self.size)
+                                sceneToMoveTo.scaleMode = .resizeFill
+                                let transition1 = SKTransition.fade(withDuration: 0.6)
+                                self.view!.presentScene(sceneToMoveTo, transition: transition1)
+
+                            }
+                            if sprite == reset {
+                                self.removeAllChildren()
+                                XWords.removeAll()
+                                BubbleWord.nodes.removeAll()
+                                let scene = GKScene(fileNamed: "GameScene")
+                                let sceneToMoveTo = scene!.rootNode as! GameScene
+                                sceneToMoveTo.scaleMode = .fill
+                                self.view!.presentScene(sceneToMoveTo)
                             }
                         }
                     }
@@ -301,18 +324,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    @objc func removeMenus() {
+        addChild(menu)
+        help.removeFromParent()
+    }
+    
     @objc func addMenus() {
         addChild(menuBubble)
         addChild(helpBubble)
         addChild(reset)
     }
 
-    func timerMain(){
+    func timerAdd(){
         timer = Timer.scheduledTimer(timeInterval: 0.125, target: self, selector:
                 #selector(self.addMenus), userInfo: nil, repeats: false)
     }
+    func timerRemove(){
+        menuBubble.removeFromParent()
+        helpBubble.removeFromParent()
+        reset.removeFromParent()
+        timer = Timer.scheduledTimer(timeInterval: 0.125, target: self, selector:
+                #selector(self.removeMenus), userInfo: nil, repeats: false)
+    }
     
     func initialize(){
+        localWidth = width / 2 - Size / 2
+        localHeight = height / 2 - Size / 2 - 50
         let backGround: SKSpriteNode = SKSpriteNode(imageNamed: "background_BubbleWords_001")
         //backGround.position = CGPoint(x: 0, y: height / 8)
         backGround.setScale(0.25)
