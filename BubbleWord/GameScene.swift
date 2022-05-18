@@ -52,7 +52,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         width = size.width
         height = size.height
         physicsWorld.contactDelegate = self
-        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)        
         initialize()
     }
     
