@@ -347,6 +347,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 #selector(self.removeMenus), userInfo: nil, repeats: false)
     }
     
+    func resume() {
+        let backGround: SKSpriteNode = SKSpriteNode(imageNamed: "background_BubbleWords_001")
+        //backGround.position = CGPoint(x: 0, y: height / 8)
+        backGround.setScale(0.25)
+        backGround.yScale = CGFloat(0.3)
+        addChild(backGround)
+        for n in 0...BubbleWord.nodes.count - 1 {
+            addChild(BubbleWord.nodes[n].spriteNode)
+        }
+    }
+    
     func initialize(){
         localWidth = width / 2 - Size / 2
         localHeight = height / 2 - Size / 2 - 50
