@@ -3,6 +3,9 @@
 //  jake-evan-erik
 //
 //  Created by 90306561 on 3/16/22.
+
+// test commnet
+
 import SpriteKit
 import GameplayKit
 
@@ -55,6 +58,7 @@ var dy : CGFloat?
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
     
     override func didMove(to view: SKView) {
         width = size.width
