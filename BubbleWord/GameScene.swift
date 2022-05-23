@@ -22,7 +22,6 @@ var localHeight = height / 2 - Size / 2 - 50
 
 var timer : Timer?
 
-let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
 
 var cancelMode = false
 var word : SKLabelNode!
@@ -48,6 +47,7 @@ var menuBubble = SKSpriteNode(imageNamed: "menuBubble")
 var helpBubble = SKSpriteNode(imageNamed: "helpBubble")
 var reset = SKSpriteNode(imageNamed: "reset")
 
+let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
 
 var hasHit = true
 var ZRot = false
@@ -57,15 +57,35 @@ var dx : CGFloat?
 var dy : CGFloat?
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
-    let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
+
     
     override func didMove(to view: SKView) {
-        width = size.width
-        height = size.height
-        physicsWorld.contactDelegate = self
-        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-        initialize()
+        if !helpVar {
+            width = size.width
+            height = size.height
+            physicsWorld.contactDelegate = self
+            physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+            initialize()
+        }
+        else {
+            let backGround: SKSpriteNode = SKSpriteNode(imageNamed: "background_BubbleWords_001")
+            //backGround.position = CGPoint(x: 0, y: height / 8)
+            backGround.setScale(0.25)
+            backGround.yScale = CGFloat(0.3)
+            addChild(backGround)
+            physicsWorld.contactDelegate = self
+            physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+            for n in 0...BubbleWord.nodes.count - 1 {
+                addChild(BubbleWord.nodes[n].spriteNode)
+            }
+            addChild(Shooter)
+            addChild(word)
+            score.text = "Score: " + String(scoreInt)
+            addChild(score)
+            addChild(cancel)
+            addChild(check)
+            addChild(menu)
+        }
     }
     
     // Touches Functions
@@ -351,16 +371,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 #selector(self.removeMenus), userInfo: nil, repeats: false)
     }
     
-    func resume() {
-        let backGround: SKSpriteNode = SKSpriteNode(imageNamed: "background_BubbleWords_001")
-        //backGround.position = CGPoint(x: 0, y: height / 8)
-        backGround.setScale(0.25)
-        backGround.yScale = CGFloat(0.3)
-        addChild(backGround)
-        for n in 0...BubbleWord.nodes.count - 1 {
-            addChild(BubbleWord.nodes[n].spriteNode)
-        }
-    }
     
     func initialize(){
         localWidth = width / 2 - Size / 2
