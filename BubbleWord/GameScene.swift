@@ -85,6 +85,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(cancel)
             addChild(check)
             addChild(menu)
+            helpVar = false
         }
     }
     
@@ -145,7 +146,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                     word.text = ""
                                     XWords.removeAll()
                                 }
-                                else{cancelMode = true}
+                                else{
+                                    cancelMode = true
+                                    
+                                }
                             }
                             if sprite == menu {
                                 menu.removeFromParent()
@@ -169,6 +173,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 self.removeAllChildren()
                                 XWords.removeAll()
                                 BubbleWord.nodes.removeAll()
+                                cancelMode = false
+                                scoreInt = 0
                                 let scene = GKScene(fileNamed: "GameScene")
                                 let sceneToMoveTo = scene!.rootNode as! GameScene
                                 sceneToMoveTo.scaleMode = .fill
@@ -382,15 +388,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(backGround)
         help.size = CGSize(width: 40, height: 40)
         help.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3)
-        help.zPosition = 2
+        help.zPosition = 1
         menu.size = CGSize(width: 40, height: 40)
         menu.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3)
         addChild(menu)
         menuBubble.size = CGSize(width: 40, height: 40)
         menuBubble.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3)
+        menuBubble.zPosition = 2
         helpBubble.size = CGSize(width: 40, height: 40)
+        helpBubble.zPosition = 2
         helpBubble.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3 + 40)
         reset.size = CGSize(width: 40, height: 40)
+        reset.zPosition = 2
         reset.position = CGPoint(x: (width / 2) * 0.8, y: (size.height / 2) * -0.3 - 40)
         check.position = CGPoint(x: (size.width / 2) * 0.7, y: (size.height / 2) * -0.8)
         check.zPosition = 1
