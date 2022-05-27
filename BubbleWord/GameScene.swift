@@ -37,6 +37,7 @@ var XWords: [Letters] = []
 
 var check = SKSpriteNode(imageNamed: "check")
 var cancel = SKSpriteNode(imageNamed: "Xulu")
+var cancel2 = SKSpriteNode(imageNamed:"Xulu2")
 var Shooter = SKSpriteNode(imageNamed: "Shooter")
 var BS = SKSpriteNode(imageNamed: "BS")
 var Ball = SKSpriteNode(imageNamed: "Ball")
@@ -47,8 +48,6 @@ var menuBubble = SKSpriteNode(imageNamed: "menuBubble")
 var helpBubble = SKSpriteNode(imageNamed: "helpBubble")
 var reset = SKSpriteNode(imageNamed: "reset")
 
-let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
-
 var hasHit = true
 var ZRot = false
 var ballCount = 0
@@ -58,6 +57,7 @@ var dy : CGFloat?
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
+    let allNewWords: [[String]] = organize(data: readFile(inputFile: "words.txt"))
     
     override func didMove(to view: SKView) {
         if !helpVar {
@@ -132,8 +132,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                     }
                                 }
                             }
-                            if sprite == cancel {
+                            if sprite == cancel || sprite == cancel2 {
                                 if cancelMode {
+                                    cancel2.removeFromParent()
+                                    addChild(cancel)
                                     cancelMode = false
                                 }
                                 else if word.text != "" {
@@ -148,7 +150,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 }
                                 else{
                                     cancelMode = true
-                                    
+                                    cancel.removeFromParent()
+                                    addChild(cancel2)
                                 }
                             }
                             if sprite == menu {
@@ -174,6 +177,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 XWords.removeAll()
                                 BubbleWord.nodes.removeAll()
                                 cancelMode = false
+                                cancel2.removeFromParent()
+                                cancel.removeFromParent()
                                 scoreInt = 0
                                 let scene = GKScene(fileNamed: "GameScene")
                                 let sceneToMoveTo = scene!.rootNode as! GameScene
@@ -407,6 +412,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cancel.position = CGPoint(x: (size.width / 2) * -0.7, y: (size.height / 2) * -0.8)
         cancel.zPosition = 1
         addChild(cancel)
+        cancel2.position = CGPoint(x: (size.width / 2) * -0.7, y: (size.height / 2) * -0.8)
+        cancel2.zPosition = 1
         Shooter.size = CGSize(width: 180, height: 185)
         Shooter.anchorPoint = CGPoint(x: 0.5, y: 0)
         Shooter.position = CGPoint(x: 0, y: size.width * -1)
