@@ -14,16 +14,18 @@ let startGame = SKLabelNode()
 
 class MainMenuScene: SKScene{
     override func didMove(to view: SKView) {
-//        let background = SKSpriteNode(imageNamed: "background")
-//        background.size = self.size
-//        background.zPosition = 0
-//        background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-//        self.addChild(background)
+        let backGround: SKSpriteNode = SKSpriteNode(imageNamed: "background_BubbleWords_001")
+        //backGround.position = CGPoint(x: 0, y: height / 8)
+        backGround.setScale(0.5)
+        backGround.yScale = CGFloat(0.6)
+        addChild(backGround)
         
         let title1 = SKLabelNode()
         title1.fontSize = 150
-        title1.fontColor = SKColor.white
+        title1.fontColor = SKColor.black
         title1.text = "Bubble Word"
+        title1.fontName = "Microsoft Sans Serif"
+        title1.fontSize = 120
         title1.zPosition = 1
         title1.setScale(0.5)
         title1.position = CGPoint(x: self.size.width/2, y: self.size.height * 0.65)
@@ -31,7 +33,9 @@ class MainMenuScene: SKScene{
         
         
         startGame.fontSize = 75
-        startGame.fontColor = SKColor.white
+        startGame.fontColor = SKColor.black
+        startGame.fontName = "Microsoft Sans Serif"
+        startGame.fontSize = 75
         startGame.text = "Start Game"
         startGame.zPosition = 1
         startGame.name = "Start Button"
