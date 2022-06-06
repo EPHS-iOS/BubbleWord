@@ -39,7 +39,6 @@ var check = SKSpriteNode(imageNamed: "check")
 var cancel = SKSpriteNode(imageNamed: "Xulu")
 var cancel2 = SKSpriteNode(imageNamed:"Xulu2")
 var Shooter = SKSpriteNode(imageNamed: "Shooter")
-var BS = SKSpriteNode(imageNamed: "BS")
 var Ball = SKSpriteNode(imageNamed: "Ball")
 
 var help = SKSpriteNode(imageNamed: "help")
@@ -93,7 +92,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        ballCount += 1
         if let touch = touches.first {
         let touchLocation = touch.location(in: self)
         let touchedWhere = nodes(at: touchLocation)
@@ -207,14 +205,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let x1 = touchLocation.x
                 let y1 = touchLocation.y + 321
                 let theta = -1 * atan(x1/y1)
-                Shooter.removeFromParent()
                 Ball.removeFromParent()
-                BS.removeFromParent()
-                BS.zRotation = Shooter.zRotation
                 Ball.position = CGPoint(x: 0, y: size.width * -1)
                 //Ball.zRotation = theta
                 addChild(Ball)
-                addChild(BS)
                 dx = theta * 360 * -1
                 Ball.physicsBody?.velocity = CGVector(dx: theta * 360 * -1, dy: 350)
                 dy = Ball.physicsBody?.velocity.dy
@@ -279,9 +273,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if n != -1 {
                 hasHit = true
                 Ball.removeFromParent()
-                BS.removeFromParent()
-                Shooter.removeFromParent()
-                addChild(Shooter)
                 Shooter.zRotation = 0
                 if cancelMode {
                     scoreInt -= BubbleWord.nodes[n].scrabble
@@ -417,12 +408,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cancel2.zPosition = 1
         Shooter.size = CGSize(width: 180, height: 185)
         Shooter.anchorPoint = CGPoint(x: 0.5, y: 0)
+        Shooter.zPosition = 3
         Shooter.position = CGPoint(x: 0, y: size.width * -1)
         addChild(Shooter)
-        BS.size = CGSize(width: 180, height: 185)
-        BS.anchorPoint = CGPoint(x: 0.5, y: 0)
-        BS.position = CGPoint(x: 0, y: size.width * -1)
-        BS.zPosition = 1
         Ball.size = CGSize(width: 35, height: 35)
         Ball.physicsBody = SKPhysicsBody(circleOfRadius: 17.5)
         Ball.physicsBody?.contactTestBitMask = Ball.physicsBody?.collisionBitMask ?? 0
