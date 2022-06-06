@@ -1,10 +1,10 @@
 # BubbleWord
 Bubble Word is a game that uses a bubble shooter style turret and releases a ball that hits one of 30 randomly spawned letters. The goal is to spell out a word and click the check. The app will then check to see if it's a word and then adds the respective scrabble letter values to a score. The hardest part of developing this app was to find a way to include the dictionary to check and see if the inputted word was really a word. There was a compromise by having a large dictionary that check through words of length 8 or less. Assets and looks of the app have been updated throughout the time spent on this app, to reach a state of satisfaction.
 
-Current Build
-![Screen Shot 2022-06-03 at 10 21 35 AM](https://user-images.githubusercontent.com/60675994/171884184-24bcd4c1-1218-4101-965e-4fed5fba90d3.png)
-Alpha Build
-![Simulator Screen Shot - iPhone 13 - 2022-04-05 at 16 36 06](https://user-images.githubusercontent.com/72754329/162781085-71980dbb-074a-4678-9861-85b362c53ced.png)
+* Current Build
+* ![Screen Shot 2022-06-03 at 10 21 35 AM](https://user-images.githubusercontent.com/60675994/171884184-24bcd4c1-1218-4101-965e-4fed5fba90d3.png)
+* Alpha Build
+* ![Simulator Screen Shot - iPhone 13 - 2022-04-05 at 16 36 06](https://user-images.githubusercontent.com/72754329/162781085-71980dbb-074a-4678-9861-85b362c53ced.png)
 
 
 ## Version History
