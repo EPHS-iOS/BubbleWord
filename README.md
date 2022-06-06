@@ -4,7 +4,7 @@ Bubble Word is a game that uses a bubble shooter style turret and releases a bal
 * Current Build
 * ![Screen Shot 2022-06-03 at 10 21 35 AM](https://user-images.githubusercontent.com/60675994/171884184-24bcd4c1-1218-4101-965e-4fed5fba90d3.png)
 * Alpha Build
-* ![Simulator Screen Shot - iPhone 13 - 2022-04-05 at 16 36 06](https://user-images.githubusercontent.com/72754329/162781085-71980dbb-074a-4678-9861-85b362c53ced.png)
+* ![Screen Shot 2022-04-06 at 10 53 05 AM](https://user-images.githubusercontent.com/60675994/162016615-9b4ccfce-b6b2-4172-88df-7c83ce1dc091.png)
 
 
 ## Version History
