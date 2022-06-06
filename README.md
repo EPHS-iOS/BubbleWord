@@ -2,7 +2,7 @@
 Bubble Word is a game that uses a bubble shooter style turret and releases a ball that hits one of 30 randomly spawned letters. The goal is to spell out a word and click the check. The app will then check to see if it's a word and then adds the respective scrabble letter values to a score. The hardest part of developing this app was to find a way to include the dictionary to check and see if the inputted word was really a word. There was a compromise by having a large dictionary that check through words of length 8 or less. Assets and looks of the app have been updated throughout the time spent on this app, to reach a state of satisfaction.
 
 * Current Build
-* ![Screen Shot 2022-06-03 at 10 21 35 AM](https://user-images.githubusercontent.com/60675994/171884184-24bcd4c1-1218-4101-965e-4fed5fba90d3.png)
+* ![Screen Shot 2022-06-03 at 10 24 18 AM](https://user-images.githubusercontent.com/60675994/171884207-e7a2acc9-7851-4067-b94e-9491540dd7e5.png)
 * Alpha Build
 * ![Screen Shot 2022-04-06 at 10 53 05 AM](https://user-images.githubusercontent.com/60675994/162016615-9b4ccfce-b6b2-4172-88df-7c83ce1dc091.png)
 
