@@ -10,9 +10,9 @@ Bubble Word is a game that uses a bubble shooter style turret and releases a bal
 
 ## Version History
 App Store Versions
-- 1.1.0
-  - (in progress, updating app store photo previews)
-  - x
+- 1.2
+  - Optimized app
+  - *updating app store photo previews*
 
 - 1.0.4
   - Fixed an issue with our menu.
